@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AppLayout from "./UI/AppLayout";
 import GlobalStyles from "./styles/GlobalStyles";
 
@@ -18,8 +13,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<AppLayout />}>
-            <Route index element={<Navigate replace to="starter" />} />
-            <Route path="starter" element={<OnMountApi />} />
+            <Route path="/" element={<OnMountApi />} />
             <Route path="filter-and-find/:query" element={<FilterAndFind />} />
             <Route
               path="/personalized-news/:params"
