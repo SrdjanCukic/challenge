@@ -7,7 +7,7 @@ const SearchBar = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      navigate(`/filter-and-find/${searchQuery}`);
+      navigate(`/search/${searchQuery}`);
     }
   };
 

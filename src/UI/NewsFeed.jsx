@@ -113,15 +113,15 @@ const NewsFeed = () => {
       case "newer":
         sortedArray.sort(
           (a, b) =>
-            new Date(b.published_date || b.publishedAt) -
-            new Date(a.published_date || a.publishedAt)
+            new Date(b.pub_date || b.publishedAt) -
+            new Date(a.pub_date || a.publishedAt)
         );
         break;
       case "older":
         sortedArray.sort(
           (a, b) =>
-            new Date(a.published_date || a.publishedAt) -
-            new Date(b.published_date || b.publishedAt)
+            new Date(a.pub_date || a.publishedAt) -
+            new Date(b.pub_date || b.publishedAt)
         );
         break;
       default:

@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AppLayout from "./UI/AppLayout";
 import GlobalStyles from "./styles/GlobalStyles";
 
-import FilterAndFind from "./components/FilterAndFind";
+import SearchArticles from "./components/SearchArticles";
 import OnMountApi from "./components/OnMountApi";
 import NewsFeedPersonalized from "./components/NewsFeedPersonalized";
 
@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route path="/" element={<OnMountApi />} />
-            <Route path="filter-and-find/:query" element={<FilterAndFind />} />
+            <Route path="search/:query" element={<SearchArticles />} />
             <Route
               path="/personalized-news/:params"
               element={<NewsFeedPersonalized />}
