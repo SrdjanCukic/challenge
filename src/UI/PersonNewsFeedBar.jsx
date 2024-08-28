@@ -1,7 +1,16 @@
-import { useState } from "react";
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PreferencesForm = () => {
+const PreferencesForm = ({ isOpen, toggleModal }) => {
   const navigate = useNavigate();
   const [sources, setSources] = useState({
     "The New York Times": true,
@@ -9,6 +18,23 @@ const PreferencesForm = () => {
     Gnews: true,
   });
   const [error, setError] = useState("");
+
+  let paperRef = useRef(null);
+
+  useEffect(() => {
+    let maybeHandler = (event) => {
+      if (paperRef.current && !paperRef.current.contains(event.target)) {
+        toggleModal();
+        console.log("registruje");
+      }
+    };
+
+    document.addEventListener("mousedown", maybeHandler);
+
+    return () => {
+      document.removeEventListener("mousedown", maybeHandler);
+    };
+  }, [toggleModal]);
 
   const handleSourceChange = (source) => {
     const updatedSources = {
@@ -39,26 +65,42 @@ const PreferencesForm = () => {
     const sourcesString = activeSources.join(",");
 
     navigate(`/personalized-news/${sourcesString}`);
+    console.log("handle save");
+    toggleModal();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div>
-      <h2>Set Your Preferences</h2>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <div>
-        <h3>Sources:</h3>
-        {Object.keys(sources).map((source) => (
-          <label key={source}>
-            <input
-              type="checkbox"
-              checked={sources[source]}
-              onChange={() => handleSourceChange(source)}
-            />
-            {source}
-          </label>
-        ))}
-      </div>
-      <button onClick={handleSave}>Save Preferences</button>
+      <Dialog open={isOpen} PaperProps={{ ref: paperRef }}>
+        <DialogTitle>Set Your Preferences</DialogTitle>
+        {error && (
+          <DialogContentText style={{ color: "red" }}>
+            {error}
+          </DialogContentText>
+        )}
+        <DialogContent>
+          <DialogContentText>Sources:</DialogContentText>
+          <DialogActions>
+            {Object.keys(sources).map((source) => (
+              <label key={source}>
+                <Checkbox
+                  type="checkbox"
+                  checked={sources[source]}
+                  onChange={() => handleSourceChange(source)}
+                />
+                {source}
+              </label>
+            ))}
+          </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={handleSave}>
+            Save Preferences
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
