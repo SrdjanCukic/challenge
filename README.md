@@ -1,4 +1,4 @@
-Challenge is a simple application that is build for excercise, this is my first projecet thath i build in React.
+Challenge is a simple application that is build for excercise, this is my first projecet that i build in React.
 
 Here is live link for site:
 
