@@ -72,15 +72,15 @@ export function Search() {
       case "newer":
         sortedArray.sort(
           (a, b) =>
-            new Date(b.created_date || b.publishedAt) -
-            new Date(a.created_date || a.publishedAt)
+            new Date(b.pub_date || b.publishedAt) -
+            new Date(a.pub_date || a.publishedAt)
         );
         break;
       case "older":
         sortedArray.sort(
           (a, b) =>
-            new Date(a.created_date || a.publishedAt) -
-            new Date(b.created_date || b.publishedAt)
+            new Date(a.pub_date || a.publishedAt) -
+            new Date(b.pub_date || b.publishedAt)
         );
         break;
       case "The New York Times":
