@@ -11,14 +11,18 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../service/useLocalStorage";
 
 const NewsSourceModal = ({ isOpen, toggleModal }) => {
   const navigate = useNavigate();
-  const [sources, setSources] = useState({
+
+  const defaultSources = {
     "The New York Times": true,
     "News Api": true,
     Gnews: true,
-  });
+  };
+
+  const [sources, setSources] = useLocalStorage("newsSources", defaultSources);
   const [error, setError] = useState("");
 
   const handleSourceChange = (source) => {
@@ -28,10 +32,7 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
     };
     setSources(updatedSources);
 
-    // Clear the error message if at least one source is selected
-    const activeSources = Object.values(updatedSources).filter(
-      (value) => value
-    );
+    const activeSources = Object.values(updatedSources).filter(Boolean);
     if (activeSources.length > 0) {
       setError("");
     }
@@ -39,7 +40,7 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    const activeSources = Object.keys(sources).filter(
+    const activeSources = Object.keys(sources || {}).filter(
       (source) => sources[source]
     );
 
@@ -51,7 +52,6 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
     const sourcesString = activeSources.join(",");
 
     navigate(`/personalized-news/${sourcesString}`);
-    console.log("handle save");
     toggleModal();
   };
 
@@ -65,7 +65,7 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
           <DialogContent>
             <DialogContentText>Sources:</DialogContentText>
             <Stack>
-              {Object.keys(sources).map((source) => (
+              {Object.keys(sources || defaultSources).map((source) => (
                 <label key={source}>
                   <Checkbox
                     type="checkbox"

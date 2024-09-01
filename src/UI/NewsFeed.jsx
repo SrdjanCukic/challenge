@@ -44,7 +44,7 @@ const NewsFeed = () => {
       !error3
     ) {
       let combinedArray = [];
-      console.log(nyTimes, gNewsApi, newsApi);
+
       const sourcesArray = sources.split(",");
 
       if (
@@ -90,7 +90,6 @@ const NewsFeed = () => {
       const finalCombinedArray = combinedArray.filter(
         (item) => item.content !== "[Removed]"
       );
-      console.log(finalCombinedArray);
 
       setCombinedData(finalCombinedArray);
     }
