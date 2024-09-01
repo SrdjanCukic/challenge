@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import SearchBar from "../UI/SearchBar";
+import { Button } from "@mui/material";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 
 const StyledHeader = styled.header`
   background-color: lightgray;
@@ -9,11 +12,17 @@ const StyledHeader = styled.header`
   justify-content: space-between;
 `;
 
-function Header() {
+function Header({ toggleModal }) {
   return (
     <StyledHeader>
       <div>Logo</div>
+      <div>
+        <SearchBar />
+      </div>
       <div>NewsSite</div>
+      <Button variant="outlined" color="secondary" onClick={toggleModal}>
+        <ManageSearchIcon color="secondary" />
+      </Button>
     </StyledHeader>
   );
 }

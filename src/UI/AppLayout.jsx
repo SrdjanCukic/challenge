@@ -1,19 +1,24 @@
 import styled from "styled-components";
 import Header from "../components/Header";
-import SearchBar from "./SearchBar";
 import { Outlet } from "react-router-dom";
-import PersonNewsFeedBar from "./PersonNewsFeedBar";
+import { useState } from "react";
+import NewsSourceModal from "./NewsSourceModal";
 
 const StyledAppLayout = styled.div`
   height: 100vh;
 `;
 
 function AppLayout() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   return (
     <StyledAppLayout>
-      <Header />
-      <SearchBar />
-      <PersonNewsFeedBar />
+      <Header toggleModal={toggleModal} />
+      <NewsSourceModal isOpen={isModalOpen} toggleModal={toggleModal} />
       <Outlet />
     </StyledAppLayout>
   );
