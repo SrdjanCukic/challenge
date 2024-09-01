@@ -88,9 +88,6 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
               marginRight: "30px",
             }}
           >
-            <Button variant="outlined" type="submit">
-              Save
-            </Button>
             <Button
               type="button"
               variant="outlined"
@@ -98,6 +95,9 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
               onClick={toggleModal}
             >
               Cancel
+            </Button>
+            <Button variant="outlined" type="submit">
+              Save
             </Button>
           </Stack>
         </form>
