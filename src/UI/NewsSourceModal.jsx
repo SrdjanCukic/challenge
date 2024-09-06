@@ -40,7 +40,7 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
 
   const handleSave = e => {
     e.preventDefault();
-    const activeSources = Object.keys(sources || {}).filter(
+    const activeSources = Object.keys(sources).filter(
       source => sources[source],
     );
 
@@ -65,7 +65,7 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
           <DialogContent>
             <DialogContentText>Sources:</DialogContentText>
             <Stack>
-              {Object.keys(sources || DEFAULT_SOURCES).map(source => (
+              {Object.keys(sources).map(source => (
                 <label key={source}>
                   <Checkbox
                     type="checkbox"
