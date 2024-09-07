@@ -8,50 +8,50 @@ import {
   DialogTitle,
   Divider,
   Stack,
-} from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+} from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from '../service/useLocalStorage';
+
+const DEFAULT_SOURCES = {
+  'The New York Times': true,
+  'News Api': true,
+  ' Gnews': true,
+};
 
 const NewsSourceModal = ({ isOpen, toggleModal }) => {
   const navigate = useNavigate();
-  const [sources, setSources] = useState({
-    "The New York Times": true,
-    "News Api": true,
-    Gnews: true,
-  });
-  const [error, setError] = useState("");
 
-  const handleSourceChange = (source) => {
+  const [sources, setSources] = useLocalStorage('newsSources', DEFAULT_SOURCES);
+  const [error, setError] = useState('');
+
+  const handleSourceChange = source => {
     const updatedSources = {
       ...sources,
       [source]: !sources[source],
     };
     setSources(updatedSources);
 
-    // Clear the error message if at least one source is selected
-    const activeSources = Object.values(updatedSources).filter(
-      (value) => value
-    );
+    const activeSources = Object.values(updatedSources).filter(Boolean);
     if (activeSources.length > 0) {
-      setError("");
+      setError('');
     }
   };
 
-  const handleSave = (e) => {
+  const handleSave = e => {
     e.preventDefault();
     const activeSources = Object.keys(sources).filter(
-      (source) => sources[source]
+      source => sources[source],
     );
 
     if (activeSources.length === 0) {
-      setError("Please select at least one source.");
+      setError('Please select at least one source.');
       return;
     }
 
-    const sourcesString = activeSources.join(",");
+    const sourcesString = activeSources.join(',');
 
     navigate(`/personalized-news/${sourcesString}`);
-    console.log("handle save");
     toggleModal();
   };
 
@@ -65,7 +65,7 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
           <DialogContent>
             <DialogContentText>Sources:</DialogContentText>
             <Stack>
-              {Object.keys(sources).map((source) => (
+              {Object.keys(sources).map(source => (
                 <label key={source}>
                   <Checkbox
                     type="checkbox"
@@ -82,10 +82,10 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
             spacing={2}
             divider={<Divider orientation="vertical" flexItem />}
             sx={{
-              justifyContent: "flex-end",
-              alignItems: "center",
-              marginBottom: "30px",
-              marginRight: "30px",
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginBottom: '30px',
+              marginRight: '30px',
             }}
           >
             <Button
