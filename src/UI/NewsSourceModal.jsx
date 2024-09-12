@@ -16,7 +16,7 @@ import { useLocalStorage } from '../service/useLocalStorage';
 const DEFAULT_SOURCES = {
   'The New York Times': true,
   'News Api': true,
-  ' Gnews': true,
+  Gnews: true,
 };
 
 const NewsSourceModal = ({ isOpen, toggleModal }) => {

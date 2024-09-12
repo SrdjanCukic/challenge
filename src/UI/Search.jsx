@@ -1,27 +1,16 @@
-import { useEffect, useState } from "react";
-import useMultiAPICall from "../service/useSearchFetch";
-import ArticleSearch from "./ArticleSearch";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import useMultiAPICall from '../service/useSearchFetch';
+import ArticleSearch from './ArticleSearch';
+import { useParams } from 'react-router-dom';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 export function Search() {
   const { query } = useParams();
   const [combinedData, setCombinedData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
-  const [sortOption, setSortOption] = useState("newer"); // default is "Newer"
+  const [sortOption, setSortOption] = useState('newer');
   const { source1Data, source2Data, source3Data, isLoading, error } =
     useMultiAPICall(query);
-
-  useEffect(() => {
-    if (isLoading) {
-      console.log("Loading data...");
-    } else if (error) {
-      console.log("Error:", error);
-    } else {
-      console.log("Data from Source 1:", source1Data);
-      console.log("Data from Source 2:", source2Data);
-      console.log("Data from Source 3:", source3Data);
-    }
-  }, [source1Data, source2Data, source3Data, isLoading, error, query]);
 
   useEffect(() => {
     if (!isLoading && !error) {
@@ -33,33 +22,33 @@ export function Search() {
         Array.isArray(source1Data.response.docs)
       ) {
         combinedArray = combinedArray.concat(
-          source1Data.response.docs.map((doc) => ({
+          source1Data.response.docs.map(doc => ({
             ...doc,
-            source: "The New York Times",
-          }))
+            source: 'The New York Times',
+          })),
         );
       }
 
       if (source2Data && Array.isArray(source2Data.articles)) {
         combinedArray = combinedArray.concat(
-          source2Data.articles.map((article) => ({
+          source2Data.articles.map(article => ({
             ...article,
-            source: "News Api",
-          }))
+            source: 'News Api',
+          })),
         );
       }
 
       if (source3Data && Array.isArray(source3Data.articles)) {
         combinedArray = combinedArray.concat(
-          source3Data.articles.map((article) => ({
+          source3Data.articles.map(article => ({
             ...article,
-            source: "Gnews",
-          }))
+            source: 'Gnews',
+          })),
         );
       }
 
       const finalCombinedArray = combinedArray.filter(
-        (item) => item.content !== "[Removed]"
+        item => item.content !== '[Removed]',
       );
 
       setCombinedData(finalCombinedArray);
@@ -69,30 +58,30 @@ export function Search() {
   useEffect(() => {
     let sortedArray = [...combinedData];
     switch (sortOption) {
-      case "newer":
+      case 'newer':
         sortedArray.sort(
           (a, b) =>
             new Date(b.pub_date || b.publishedAt) -
-            new Date(a.pub_date || a.publishedAt)
+            new Date(a.pub_date || a.publishedAt),
         );
         break;
-      case "older":
+      case 'older':
         sortedArray.sort(
           (a, b) =>
             new Date(a.pub_date || a.publishedAt) -
-            new Date(b.pub_date || b.publishedAt)
+            new Date(b.pub_date || b.publishedAt),
         );
         break;
-      case "The New York Times":
+      case 'The New York Times':
         sortedArray = sortedArray.filter(
-          (item) => item.source === "The New York Times"
+          item => item.source === 'The New York Times',
         );
         break;
-      case "News Api":
-        sortedArray = sortedArray.filter((item) => item.source === "News Api");
+      case 'News Api':
+        sortedArray = sortedArray.filter(item => item.source === 'News Api');
         break;
-      case "Gnews":
-        sortedArray = sortedArray.filter((item) => item.source === "Gnews");
+      case 'Gnews':
+        sortedArray = sortedArray.filter(item => item.source === 'Gnews');
         break;
       default:
         break;
@@ -100,12 +89,19 @@ export function Search() {
     setSortedData(sortedArray);
   }, [sortOption, combinedData]);
 
-  const handleSortChange = (event) => {
+  const handleSortChange = event => {
     setSortOption(event.target.value);
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Backdrop
+        sx={theme => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
   }
 
   if (error) {

@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import Header from "../components/Header";
-import { Outlet } from "react-router-dom";
-import { useState } from "react";
-import NewsSourceModal from "./NewsSourceModal";
+import styled from 'styled-components';
+import Header from '../components/Header';
+import { Outlet } from 'react-router-dom';
+import { useState } from 'react';
+import NewsSourceModal from './NewsSourceModal';
 
 const StyledAppLayout = styled.div`
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 function AppLayout() {
