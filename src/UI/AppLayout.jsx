@@ -11,12 +11,12 @@ function AppLayout() {
   };
 
   return (
-    <div className="box-border w-full">
-      <Header toggleModal={toggleModal} className="sticky top-0" />
+    <div className="container mx-auto">
+      <Header toggleModal={toggleModal} />
 
       <NewsSourceModal isOpen={isModalOpen} toggleModal={toggleModal} />
 
-      <Outlet className="min-h-screen min-w-full" />
+      <Outlet />
     </div>
   );
 }

@@ -15,8 +15,8 @@ function OnMountApi() {
 
   function handleingFetchDataNYT(data) {
     const valuesArray = data.results;
-    const firstThreeValues = valuesArray.slice(0, 3);
-    return firstThreeValues;
+    const firstFourValues = valuesArray.slice(0, 4);
+    return firstFourValues;
   }
 
   function handleingFetchDataNewsApi(data) {
@@ -29,6 +29,7 @@ function OnMountApi() {
     const procesedDataNyTimes = handleingFetchDataNYT(nyTimes);
     const procesedDataNewsApi = handleingFetchDataNewsApi(newsApi);
     const procesedDataGNewsApi = handleingFetchDataNewsApi(gNewsApi);
+    console.log(procesedDataGNewsApi, procesedDataNewsApi, procesedDataNyTimes);
     return (
       <div className="grid w-full grid-cols-1 gap-2 p-1 md:grid-cols-2 lg:grid-cols-3">
         {procesedDataNyTimes.map((value, index) => (

@@ -117,7 +117,7 @@ export function SearchNews() {
   ) {
     return <div>No results found.</div>;
   }
-
+  console.log(sortedData);
   return (
     <div className="w-full">
       <div className="flex w-full justify-center p-2">

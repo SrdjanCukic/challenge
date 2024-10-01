@@ -20,7 +20,6 @@ function useApiFetch(url) {
         setIsLoading(false);
       });
   }, [url]);
-  console.log(data);
   return { data, isLoading, error };
 }
 export default useApiFetch;
