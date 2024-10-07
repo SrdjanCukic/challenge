@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function useApiFetch(url) {
   const [data, setData] = useState(null);
@@ -10,17 +10,16 @@ function useApiFetch(url) {
     setIsLoading(true);
     axios
       .get(url)
-      .then((response) => {
+      .then(response => {
         setData(response.data);
       })
-      .catch((err) => {
+      .catch(err => {
         setError(err);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, [url]);
-
   return { data, isLoading, error };
 }
 export default useApiFetch;

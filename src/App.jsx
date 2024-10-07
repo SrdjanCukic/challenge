@@ -1,15 +1,14 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import AppLayout from "./UI/AppLayout";
-import GlobalStyles from "./styles/GlobalStyles";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AppLayout from './UI/AppLayout';
+import './index.css';
 
-import SearchArticles from "./components/SearchArticles";
-import OnMountApi from "./components/OnMountApi";
-import NewsFeedPersonalized from "./components/NewsFeedPersonalized";
+import SearchArticles from './components/SearchArticles';
+import OnMountApi from './components/OnMountApi';
+import NewsFeedPersonalized from './components/NewsFeedPersonalized';
 
 function App() {
   return (
     <>
-      <GlobalStyles />
       <Router>
         <Routes>
           <Route path="/" element={<AppLayout />}>

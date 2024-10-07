@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import useMultiAPICall from '../service/useSearchFetch';
-import ArticleSearch from './ArticleSearch';
+import Article from './Article';
 import { useParams } from 'react-router-dom';
 import { Backdrop, CircularProgress } from '@mui/material';
 
-export function Search() {
+export function SearchNews() {
   const { query } = useParams();
   const [combinedData, setCombinedData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
@@ -117,25 +117,29 @@ export function Search() {
   ) {
     return <div>No results found.</div>;
   }
-
+  console.log(sortedData);
   return (
-    <div>
-      <label htmlFor="filter">Sort by: </label>
-      <select
-        id="filter"
-        name="filter"
-        value={sortOption}
-        onChange={handleSortChange}
-      >
-        <option value="newer">Newer</option>
-        <option value="older">Older</option>
-        <option value="The New York Times">The New York Times</option>
-        <option value="News Api">News Api</option>
-        <option value="Gnews">Gnews</option>
-      </select>
-      {sortedData.slice(0, 25).map((value, index) => (
-        <ArticleSearch key={index} data={value} />
-      ))}
+    <div className="w-full">
+      <div className="flex w-full justify-center p-2">
+        <label htmlFor="filter">Sort by: </label>
+        <select
+          id="filter"
+          name="filter"
+          value={sortOption}
+          onChange={handleSortChange}
+        >
+          <option value="newer">Newer</option>
+          <option value="older">Older</option>
+          <option value="The New York Times">The New York Times</option>
+          <option value="News Api">News Api</option>
+          <option value="Gnews">Gnews</option>
+        </select>
+      </div>
+      <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+        {sortedData.slice(0, 25).map((value, index) => (
+          <Article key={index} data={value} />
+        ))}
+      </div>
     </div>
   );
 }

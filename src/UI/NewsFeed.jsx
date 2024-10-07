@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ArticleSearch from './ArticleSearch';
+import Article from './Article';
 import useApiFetch from '../service/useApiFetch';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Backdrop } from '@mui/material';
@@ -166,19 +166,22 @@ const NewsFeed = () => {
 
   return (
     <div>
-      <label htmlFor="filter">Sort by: </label>
-      <select
-        id="filter"
-        name="filter"
-        value={sortOption}
-        onChange={handleSortChange}
-      >
-        <option value="newer">Newer</option>
-        <option value="older">Older</option>
-      </select>
-      <div>
+      <div className="flex w-full justify-center p-2">
+        <label htmlFor="filter">Sort by: </label>
+        <select
+          id="filter"
+          name="filter"
+          value={sortOption}
+          onChange={handleSortChange}
+        >
+          <option value="newer">Newer</option>
+          <option value="older">Older</option>
+        </select>
+      </div>
+
+      <div className="grid w-full grid-cols-1 gap-2 p-1 md:grid-cols-2 lg:grid-cols-3">
         {sortedData.slice(0, 30).map((value, index) => (
-          <ArticleSearch key={index} data={value} />
+          <Article key={index} data={value} />
         ))}
       </div>
     </div>

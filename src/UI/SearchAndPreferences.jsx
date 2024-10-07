@@ -7,7 +7,7 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SearchBar = ({ toggleModal }) => {
+const SearchAndPreferences = ({ toggleModal }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -22,12 +22,24 @@ const SearchBar = ({ toggleModal }) => {
     <div>
       <Paper
         component="form"
-        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
         as="form"
         onSubmit={onSubmit}
       >
         <InputBase
-          sx={{ ml: 1, flex: 1 }}
+          sx={{
+            ml: 1,
+            flex: 1,
+            width: {
+              sm: 200, // 200px on small screens
+              md: 300, // 300px on medium screens
+              lg: 400, // 400px on large screens
+            },
+          }}
           placeholder="Search News"
           type={'text'}
           color="secondary"
@@ -46,4 +58,4 @@ const SearchBar = ({ toggleModal }) => {
   );
 };
 
-export default SearchBar;
+export default SearchAndPreferences;
