@@ -5,6 +5,7 @@ import './index.css';
 import SearchArticles from './components/SearchArticles';
 import OnMountApi from './components/OnMountApi';
 import NewsFeedPersonalized from './components/NewsFeedPersonalized';
+import Error from './UI/Error';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               path="/personalized-news/:params"
               element={<NewsFeedPersonalized />}
             />
+            <Route path="/personalized-news/" element={<Error />} />
           </Route>
         </Routes>
       </Router>
