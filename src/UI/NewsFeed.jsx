@@ -25,7 +25,7 @@ const NewsFeed = () => {
     isLoading: isLoading2,
     error: error2,
   } = useApiFetch(
-    'https://newsapi.org/v2/everything?domains=wsj.com&apiKey=f5f8bc54714e4aad8ee2fbca3b0573cd',
+    'https://newsapi.org/v2/top-headlines?country=us&apiKey=f5f8bc54714e4aad8ee2fbca3b0573cd',
   );
 
   const {
@@ -179,7 +179,7 @@ const NewsFeed = () => {
         </select>
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-2 p-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
         {sortedData.slice(0, 30).map((value, index) => (
           <Article key={index} data={value} />
         ))}

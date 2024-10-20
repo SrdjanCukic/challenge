@@ -135,7 +135,7 @@ export function SearchNews() {
           <option value="Gnews">Gnews</option>
         </select>
       </div>
-      <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
         {sortedData.slice(0, 25).map((value, index) => (
           <Article key={index} data={value} />
         ))}
