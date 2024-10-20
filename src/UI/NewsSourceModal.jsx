@@ -9,9 +9,8 @@ import {
   Divider,
   Stack,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '../service/useLocalStorage';
 
 const DEFAULT_SOURCES = {
   'The New York Times': true,
@@ -22,8 +21,23 @@ const DEFAULT_SOURCES = {
 const NewsSourceModal = ({ isOpen, toggleModal }) => {
   const navigate = useNavigate();
 
-  const [sources, setSources] = useLocalStorage('newsSources', DEFAULT_SOURCES);
+  // Use regular useState for sources
+  const [sources, setSources] = useState(() => {
+    // Initialize from local storage or use default
+    const savedSources = localStorage.getItem('newsSources');
+    return savedSources ? JSON.parse(savedSources) : DEFAULT_SOURCES;
+  });
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Show error if all sources are unselected
+    const activeSources = Object.values(sources).filter(Boolean);
+    if (activeSources.length === 0) {
+      setError('Please select at least one source.');
+    } else {
+      setError('');
+    }
+  }, [sources]);
 
   const handleSourceChange = source => {
     const updatedSources = {
@@ -31,11 +45,6 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
       [source]: !sources[source],
     };
     setSources(updatedSources);
-
-    const activeSources = Object.values(updatedSources).filter(Boolean);
-    if (activeSources.length > 0) {
-      setError('');
-    }
   };
 
   const handleSave = e => {
@@ -44,13 +53,11 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
       source => sources[source],
     );
 
-    if (activeSources.length === 0) {
-      setError('Please select at least one source.');
-      return;
-    }
+    // Save to local storage on submit
+    localStorage.setItem('newsSources', JSON.stringify(sources));
 
+    // Navigate based on active sources
     const sourcesString = activeSources.join(',');
-
     navigate(`/personalized-news/${sourcesString}`);
     toggleModal();
   };
@@ -61,14 +68,13 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
         <form onSubmit={handleSave}>
           <DialogTitle>Select at least one source:</DialogTitle>
           <Divider />
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && <Alert severity="warning">{error}</Alert>}
           <DialogContent>
             <DialogContentText>Sources:</DialogContentText>
             <Stack>
               {Object.keys(sources).map(source => (
                 <label key={source}>
                   <Checkbox
-                    type="checkbox"
                     checked={sources[source]}
                     onChange={() => handleSourceChange(source)}
                   />
