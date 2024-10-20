@@ -1,3 +1,6 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { orange } from '@mui/material/colors';
+
 function Article(props) {
   const getTitle = props => {
     if (!props?.data) return 'No Title Available';
@@ -22,6 +25,12 @@ function Article(props) {
       props.data.byline ||
       'Unknown author'
     );
+  };
+
+  const getLink = props => {
+    if (!props?.data) return 'There is no link';
+
+    return props.data.url || 'There is no link';
   };
 
   const getImage = props => {
@@ -75,7 +84,21 @@ function Article(props) {
         backgroundPosition: 'center',
       }}
     >
-      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-black/30 p-4 backdrop-blur-lg">
+      <a
+        href={getLink(props)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={
+          'absolute right-2 top-2 rounded-lg bg-white/[.50] object-right opacity-100'
+        }
+      >
+        <OpenInNewIcon
+          sx={{
+            color: orange[600],
+          }}
+        />
+      </a>
+      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-black/60 p-4 backdrop-blur-lg">
         <h1 className="line-clamp-1 font-bold text-yellow-500">{title}</h1>
 
         <hr className="my-2w h-1 border-0 bg-yellow-500 opacity-100" />
