@@ -36,12 +36,7 @@ function Article(props) {
   const getImage = props => {
     if (!props?.data) return null;
 
-    return (
-      props.data.multimedia?.[0]?.url ||
-      props.data.urlToImage ||
-      props.data.image ||
-      null
-    );
+    return props.data.urlToImage || props.data.image || null;
   };
 
   const getDate = props => {
@@ -88,15 +83,12 @@ function Article(props) {
         href={getLink(props)}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label={title}
         className={
-          'absolute right-2 top-2 rounded-lg bg-white/[.50] object-right opacity-100'
+          'absolute right-0 top-0 bg-black/60 object-right p-1 text-yellow-500 opacity-100'
         }
       >
-        <OpenInNewIcon
-          sx={{
-            color: orange[600],
-          }}
-        />
+        <OpenInNewIcon />
       </a>
       <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-black/60 p-4 backdrop-blur-lg">
         <h1 className="line-clamp-1 font-bold text-yellow-500">{title}</h1>
