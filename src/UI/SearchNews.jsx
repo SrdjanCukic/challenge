@@ -9,42 +9,41 @@ export function SearchNews() {
   const [combinedData, setCombinedData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [sortOption, setSortOption] = useState('newer');
-  const { source1Data, source2Data, source3Data, isLoading, error } =
+  const { nytData, newsApiData, gnewsData, isLoading, error } =
     useMultiAPICall(query);
 
   useEffect(() => {
     if (!isLoading && !error) {
       let combinedArray = [];
 
-      if (
-        source1Data &&
-        source1Data.response &&
-        Array.isArray(source1Data.response.docs)
-      ) {
-        combinedArray = combinedArray.concat(
-          source1Data.response.docs.map(doc => ({
-            ...doc,
-            source: 'The New York Times',
-          })),
-        );
+      if (Array.isArray(nytData)) {
+        const nytDocs = nytData.map(doc => ({
+          ...doc,
+          source: 'The New York Times',
+        }));
+        combinedArray = combinedArray.concat(nytDocs);
+      } else {
+        console.log('NYT Data is missing or not formatted correctly');
       }
 
-      if (source2Data && Array.isArray(source2Data.articles)) {
-        combinedArray = combinedArray.concat(
-          source2Data.articles.map(article => ({
-            ...article,
-            source: 'News Api',
-          })),
-        );
+      if (Array.isArray(newsApiData)) {
+        const newsApiArticles = newsApiData.map(article => ({
+          ...article,
+          source: 'News Api',
+        }));
+        combinedArray = combinedArray.concat(newsApiArticles);
+      } else {
+        console.log('News API Data is missing or not formatted correctly');
       }
 
-      if (source3Data && Array.isArray(source3Data.articles)) {
-        combinedArray = combinedArray.concat(
-          source3Data.articles.map(article => ({
-            ...article,
-            source: 'Gnews',
-          })),
-        );
+      if (Array.isArray(gnewsData)) {
+        const gnewsArticles = gnewsData.map(article => ({
+          ...article,
+          source: 'Gnews',
+        }));
+        combinedArray = combinedArray.concat(gnewsArticles);
+      } else {
+        console.log('GNews Data is missing or not formatted correctly');
       }
 
       const finalCombinedArray = combinedArray.filter(
@@ -53,7 +52,7 @@ export function SearchNews() {
 
       setCombinedData(finalCombinedArray);
     }
-  }, [source1Data, source2Data, source3Data, isLoading, error]);
+  }, [nytData, newsApiData, gnewsData, isLoading, error]);
 
   useEffect(() => {
     let sortedArray = [...combinedData];
@@ -96,7 +95,7 @@ export function SearchNews() {
   if (isLoading) {
     return (
       <Backdrop
-        sx={theme => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+        sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
         open={true}
       >
         <CircularProgress color="inherit" />
@@ -111,13 +110,13 @@ export function SearchNews() {
   if (
     !isLoading &&
     !error &&
-    source1Data.response.docs.length === 0 &&
-    source2Data.articles.length === 0 &&
-    source3Data.articles.length === 0
+    nytData.length === 0 &&
+    newsApiData.length === 0 &&
+    gnewsData.length === 0
   ) {
     return <div>No results found.</div>;
   }
-  console.log(sortedData);
+
   return (
     <div className="w-full">
       <div className="flex w-full justify-center p-2">
@@ -135,8 +134,8 @@ export function SearchNews() {
           <option value="Gnews">Gnews</option>
         </select>
       </div>
-      <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-        {sortedData.slice(0, 25).map((value, index) => (
+      <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
+        {sortedData.slice(0, 27).map((value, index) => (
           <Article key={index} data={value} />
         ))}
       </div>

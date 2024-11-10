@@ -3,49 +3,37 @@ import useApiFetch from '../service/useApiFetch';
 import Article from '../UI/Article';
 
 function OnMountApi() {
-  const { data: nyTimes } = useApiFetch(
-    'https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=cg4vzM2CAqeJM2Ojw8zIZHZyEs40LVhS',
-  );
-  const { data: newsApi } = useApiFetch(
-    'https://newsapi.org/v2/everything?domains=wsj.com&apiKey=f5f8bc54714e4aad8ee2fbca3b0573cd',
-  );
-  const { data: gNewsApi } = useApiFetch(
-    'https://gnews.io/api/v4/top-headlines?category=general&lang=en&country=us&max=10&apikey=2af35c159a71bbcede539fe4c21ad3e5',
+  const { data, isLoading, error } = useApiFetch(
+    'https://global-puls-api.onrender.com/api',
   );
 
-  function handleingFetchDataNYT(data) {
-    const valuesArray = data.results;
-    const firstFourValues = valuesArray.slice(0, 4);
-    return firstFourValues;
-  }
+  if (isLoading) return <Loader />;
+  if (error) return <p>Error fetching data: {error.message}</p>;
 
-  function handleingFetchDataNewsApi(data) {
-    const valuesArray = data.articles;
-    const firstThreeValues = valuesArray.slice(0, 3);
-    return firstThreeValues;
-  }
+  if (data) {
+    const { nyt, newsapi, gnews } = data;
 
-  if (nyTimes && newsApi && gNewsApi) {
-    const procesedDataNyTimes = handleingFetchDataNYT(nyTimes);
-    const procesedDataNewsApi = handleingFetchDataNewsApi(newsApi);
-    const procesedDataGNewsApi = handleingFetchDataNewsApi(gNewsApi);
-    console.log(procesedDataGNewsApi, procesedDataNewsApi, procesedDataNyTimes);
+    // Process data from each API
+    const procesedDataNyTimes = nyt?.results?.slice(0, 3) || [];
+    const procesedDataNewsApi = newsapi?.articles?.slice(0, 3) || [];
+    const procesedDataGNewsApi = gnews?.articles?.slice(0, 3) || [];
+
     return (
-      <div className="grid w-full grid-cols-1 gap-2 p-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
         {procesedDataNyTimes.map((value, index) => (
-          <Article key={index} data={value} />
+          <Article key={`nyt-${index}`} data={value} />
         ))}
         {procesedDataNewsApi.map((value, index) => (
-          <Article key={index} data={value} />
+          <Article key={`newsapi-${index}`} data={value} />
         ))}
         {procesedDataGNewsApi.map((value, index) => (
-          <Article key={index} data={value} />
+          <Article key={`gnews-${index}`} data={value} />
         ))}
       </div>
     );
-  } else {
-    return <Loader />;
   }
+
+  return <Loader />;
 }
 
 export default OnMountApi;
