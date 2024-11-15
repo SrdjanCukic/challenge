@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../service/GlobalContext.jsx';
 
 const DEFAULT_SOURCES = {
   'The New York Times': true,
@@ -18,12 +19,11 @@ const DEFAULT_SOURCES = {
   Gnews: true,
 };
 
-const NewsSourceModal = ({ isOpen, toggleModal }) => {
+const NewsSourceModal = () => {
   const navigate = useNavigate();
+  const { state, dispatch } = useGlobalContext();
 
-  // Use regular useState for sources
   const [sources, setSources] = useState(() => {
-    // Initialize from local storage or use default
     const savedSources = localStorage.getItem('newsSources');
     return savedSources ? JSON.parse(savedSources) : DEFAULT_SOURCES;
   });
@@ -59,12 +59,22 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
     // Navigate based on active sources
     const sourcesString = activeSources.join(',');
     navigate(`/personalized-news/${sourcesString}`);
-    toggleModal();
+
+    dispatch({ type: 'CLOSE_MODAL' });
+  };
+
+  const handleCloseModal = () => {
+    dispatch({ type: 'CLOSE_MODAL' });
   };
 
   return (
     <div>
-      <Dialog open={isOpen} onClose={toggleModal} fullWidth keepMounted={false}>
+      <Dialog
+        open={state.isModalOpen}
+        onClose={handleCloseModal}
+        fullWidth
+        keepMounted={false}
+      >
         <form onSubmit={handleSave}>
           <DialogTitle>Select at least one source:</DialogTitle>
           <Divider />
@@ -98,7 +108,7 @@ const NewsSourceModal = ({ isOpen, toggleModal }) => {
               type="button"
               variant="outlined"
               color="error"
-              onClick={toggleModal}
+              onClick={handleCloseModal}
             >
               Cancel
             </Button>
