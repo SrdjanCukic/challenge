@@ -1,24 +1,28 @@
 import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { Alert } from '@mui/material';
+import { useGlobalContext } from '../service/GlobalContext';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AlertDialogSlide() {
-  const [open, setOpen] = React.useState(true);
+  const { state, dispatch } = useGlobalContext();
+
+  const openModal = () => {
+    dispatch({ type: 'OPEN_MODAL' });
+  };
 
   const handleClose = () => {
-    setOpen(false);
+    openModal();
   };
 
   return (
     <React.Fragment>
       <Dialog
-        open={open}
+        open={!state.isModalOpen}
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}

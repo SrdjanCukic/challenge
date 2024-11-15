@@ -1,5 +1,4 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { orange } from '@mui/material/colors';
 
 function Article(props) {
   const getTitle = props => {
@@ -23,20 +22,30 @@ function Article(props) {
       props.data.byline?.original ||
       props.data.author ||
       props.data.byline ||
-      'Unknown author'
+      null
     );
   };
 
   const getLink = props => {
     if (!props?.data) return 'There is no link';
 
-    return props.data.url || 'There is no link';
+    return props.data.url || props.data.web_url || 'There is no link';
   };
 
   const getImage = props => {
     if (!props?.data) return null;
+    if (props.data.urlToImage) return props.data.urlToImage;
+    if (props.data.image) return props.data.image;
+    if (props.data.multimedia && props.data.multimedia.length > 0) {
+      const mediaUrl = props.data.multimedia[0].url;
+      if (mediaUrl) {
+        return mediaUrl.startsWith('https://static01.nyt.com/')
+          ? mediaUrl
+          : `https://static01.nyt.com/${mediaUrl}`;
+      }
+    }
 
-    return props.data.urlToImage || props.data.image || null;
+    return null;
   };
 
   const getDate = props => {
@@ -72,7 +81,7 @@ function Article(props) {
 
   return (
     <div
-      className={`relative min-h-[300px] flex-grow items-end justify-center overflow-hidden rounded bg-slate-600 shadow-md ${image ? '' : 'bg-gradient-to-r from-sky-500 to-indigo-500'}`}
+      className={`bg-grey relative min-h-[300px] flex-grow items-end justify-center overflow-hidden rounded caret-transparent shadow-md ${image ? '' : 'from-transitionStart to-transitionEnd bg-gradient-to-r'}`}
       style={{
         backgroundImage: image ? `url(${image})` : '',
         backgroundSize: 'cover',
@@ -85,25 +94,27 @@ function Article(props) {
         rel="noopener noreferrer"
         aria-label={title}
         className={
-          'absolute right-0 top-0 bg-black/60 object-right p-1 text-yellow-500 opacity-100'
+          'text-primary absolute right-0 top-0 bg-black/60 object-right p-1 opacity-100'
         }
       >
         <OpenInNewIcon />
       </a>
       <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-black/60 p-4 backdrop-blur-lg">
-        <h1 className="line-clamp-1 font-bold text-yellow-500">{title}</h1>
+        <h1 className="text-primary line-clamp-1 font-bold">{title}</h1>
 
-        <hr className="my-2w h-1 border-0 bg-yellow-500 opacity-100" />
+        <hr className="my-2w bg-primary h-1 border-0 opacity-100" />
 
         <div className="relative">
-          <p className="line-clamp-2 text-[clamp(0.875rem,_calc(1vw_+_0.5rem),_1.25rem)] text-white">
+          <p className="text-secondary line-clamp-2 text-[clamp(0.875rem,_calc(1vw_+_0.5rem),_1.25rem)]">
             {content}
           </p>
         </div>
 
         <div className="mt-2 flex w-auto flex-row justify-between opacity-70">
-          <div className="text-yellow-500">{date}</div>
-          <div className="text-yellow-500">{source ? source : author}</div>
+          <div className="text-primary">{date}</div>
+          <div className="text-primary max-w-[200px] truncate">
+            {author ? author : source}
+          </div>
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ export function SearchNews() {
   useEffect(() => {
     if (!isLoading && !error) {
       let combinedArray = [];
-
+      console.log(nytData, newsApiData, gnewsData);
       if (Array.isArray(nytData)) {
         const nytDocs = nytData.map(doc => ({
           ...doc,

@@ -5,6 +5,14 @@
 @layer base {
   body {
     @apply m-0;
-    caret-color: transparent;
+  }
+  :root {
+    /* Article  */
+    --text-white: 225 225 225;
+    --text-yellow: 234 179 8;
+    --background-black: 0 0 0;
+    --background-grey: 71 85 105;
+    --image-transition-start: 14 165 233;
+    --image-transition-end: 99 102 241;
   }
 }

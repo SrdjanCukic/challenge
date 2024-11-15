@@ -14,20 +14,29 @@ function OnMountApi() {
     const { nyt, newsapi, gnews } = data;
 
     // Process data from each API
-    const procesedDataNyTimes = nyt?.results?.slice(0, 3) || [];
-    const procesedDataNewsApi = newsapi?.articles?.slice(0, 3) || [];
-    const procesedDataGNewsApi = gnews?.articles?.slice(0, 3) || [];
+    const processedDataNyTimes =
+      nyt?.results
+        ?.filter(item => item.abstract !== '[Removed]')
+        ?.slice(0, 3) || [];
+    const processedDataNewsApi =
+      newsapi?.articles
+        ?.filter(item => item.content !== '[Removed]')
+        ?.slice(0, 3) || [];
+    const processedDataGNewsApi =
+      gnews?.articles
+        ?.filter(item => item.content !== '[Removed]')
+        ?.slice(0, 3) || [];
 
     return (
       <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
-        {procesedDataNyTimes.map((value, index) => (
-          <Article key={`nyt-${index}`} data={value} />
-        ))}
-        {procesedDataNewsApi.map((value, index) => (
+        {processedDataNewsApi.map((value, index) => (
           <Article key={`newsapi-${index}`} data={value} />
         ))}
-        {procesedDataGNewsApi.map((value, index) => (
+        {processedDataGNewsApi.map((value, index) => (
           <Article key={`gnews-${index}`} data={value} />
+        ))}
+        {processedDataNyTimes.map((value, index) => (
+          <Article key={`nyt-${index}`} data={value} />
         ))}
       </div>
     );
