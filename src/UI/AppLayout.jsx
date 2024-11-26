@@ -4,10 +4,12 @@ import NewsSourceModal from './NewsSourceModal';
 
 function AppLayout() {
   return (
-    <div className="container mx-auto">
+    <div className="bg-background-mode min-h-screen w-screen">
       <Header />
-      <NewsSourceModal />
-      <Outlet />
+      <div className="container mx-auto">
+        <NewsSourceModal />
+        <Outlet />
+      </div>
     </div>
   );
 }

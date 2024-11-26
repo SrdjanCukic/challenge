@@ -14,6 +14,7 @@ const NewsFeed = () => {
 
   const { data, isLoading, error } = useApiFetch(
     'https://global-puls-api.onrender.com/api',
+    // 'http://localhost:3000/api',
   );
 
   const { nyt, newsapi, gnews } = data || {};
@@ -123,12 +124,15 @@ const NewsFeed = () => {
   return (
     <div>
       <div className="flex w-full justify-center p-2">
-        <label htmlFor="filter">Sort by: </label>
+        <label htmlFor="filter" className="pr-2 text-foreground">
+          Sort by:{' '}
+        </label>
         <select
           id="filter"
           name="filter"
           value={sortOption}
           onChange={handleSortChange}
+          className="rounded-lg"
         >
           <option value="newer">Newer</option>
           <option value="older">Older</option>

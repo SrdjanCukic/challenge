@@ -3,16 +3,22 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply m-0;
+  body.dark {
+    --primary: 234 179 8;
+    --foreground: 225 225 225;
+    --background: 0 0 0;
+    --background-card: 71 85 105;
+    --background-dark-mode: 51 25 0;
+    --gradient-from: 14 165 233;
+    --gradient-to: 99 102 241;
   }
-  :root {
-    /* Article  */
-    --text-white: 225 225 225;
-    --text-yellow: 234 179 8;
-    --background-black: 0 0 0;
-    --background-grey: 71 85 105;
-    --image-transition-start: 14 165 233;
-    --image-transition-end: 99 102 241;
+  body {
+    --primary: 59 130 246;
+    --foreground: 0 0 0;
+    --background: 255 255 255;
+    --background-card: 229 231 235;
+    --background-dark-mode: 240 240 240;
+    --gradient-from: 96 165 250;
+    --gradient-to: 59 130 246;
   }
 }

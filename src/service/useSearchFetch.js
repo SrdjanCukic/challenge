@@ -16,6 +16,7 @@ const useMultiAPICall = keyword => {
       try {
         const response = await fetch(
           `https://global-puls-api.onrender.com/keyword?keyword=${keyword}`,
+          // `http://localhost:3000/keyword?keyword=${keyword}`,
         );
         if (!response.ok) {
           throw new Error('Failed to fetch data');

@@ -81,7 +81,7 @@ function Article(props) {
 
   return (
     <div
-      className={`bg-grey relative min-h-[300px] flex-grow items-end justify-center overflow-hidden rounded caret-transparent shadow-md ${image ? '' : 'from-transitionStart to-transitionEnd bg-gradient-to-r'}`}
+      className={`relative min-h-[300px] flex-grow items-end justify-center overflow-hidden rounded bg-background-card caret-transparent shadow-md ${image ? '' : 'bg-gradient-gradient-from to-gradient-to'}`}
       style={{
         backgroundImage: image ? `url(${image})` : '',
         backgroundSize: 'cover',
@@ -94,25 +94,25 @@ function Article(props) {
         rel="noopener noreferrer"
         aria-label={title}
         className={
-          'text-primary absolute right-0 top-0 bg-black/60 object-right p-1 opacity-100'
+          'absolute right-0 top-0 rounded bg-background/60 object-right p-1 text-primary opacity-100'
         }
       >
         <OpenInNewIcon />
       </a>
-      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-black/60 p-4 backdrop-blur-lg">
-        <h1 className="text-primary line-clamp-1 font-bold">{title}</h1>
+      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-background/60 p-4 backdrop-blur-lg">
+        <h1 className="line-clamp-1 font-bold text-primary">{title}</h1>
 
-        <hr className="my-2w bg-primary h-1 border-0 opacity-100" />
+        <hr className="my-2w h-1 border-0 bg-primary opacity-100" />
 
         <div className="relative">
-          <p className="text-secondary line-clamp-2 text-[clamp(0.875rem,_calc(1vw_+_0.5rem),_1.25rem)]">
+          <p className="line-clamp-2 text-[clamp(0.875rem,_calc(1vw_+_0.5rem),_1.25rem)] text-foreground">
             {content}
           </p>
         </div>
 
         <div className="mt-2 flex w-auto flex-row justify-between opacity-70">
           <div className="text-primary">{date}</div>
-          <div className="text-primary max-w-[200px] truncate">
+          <div className="max-w-[200px] truncate text-primary">
             {author ? author : source}
           </div>
         </div>

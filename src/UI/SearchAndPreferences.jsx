@@ -41,9 +41,9 @@ const SearchAndPreferences = () => {
             ml: 1,
             flex: 1,
             width: {
-              sm: 200, // 200px on small screens
-              md: 300, // 300px on medium screens
-              lg: 400, // 400px on large screens
+              sm: 200,
+              md: 300,
+              lg: 400,
             },
           }}
           placeholder="Search News"

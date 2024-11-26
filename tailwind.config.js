@@ -4,12 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: 'rgb(var(--text-yellow) / <alpha-value>)',
-        secondary: 'rgb(var(--text-white) / <alpha-value>)',
-        black: 'rgb(var(--background-black) / <alpha-value>)',
-        grey: 'rgb(var(--background-grey) / <alpha-value>)',
-        transitionStart: 'rgb(var(--image-transition-start) / <alpha-value>)',
-        transitionEnd: 'rgb(var(--image-transition-end) / <alpha-value>)',
+        primary: 'rgb(var(--primary) / <alpha-value>)',
+        foreground: 'rgb(var(--foreground) / <alpha-value>)',
+        background: 'rgb(var(--background) / <alpha-value>)',
+        'background-card': 'rgb(var(--background-card) / <alpha-value>)',
+        'background-mode': 'rgb(var(--background-dark-mode) / <alpha-value>)',
+        'gradient-from': 'rgb(var(--gradient-from) / <alpha-value>)',
+        'gradient-to': 'rgb(var(--gradient-to) / <alpha-value>)',
       },
     },
   },

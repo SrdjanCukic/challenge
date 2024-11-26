@@ -5,6 +5,7 @@ import Article from '../UI/Article';
 function OnMountApi() {
   const { data, isLoading, error } = useApiFetch(
     'https://global-puls-api.onrender.com/api',
+    // 'http://localhost:3000/api',
   );
 
   if (isLoading) return <Loader />;

@@ -13,6 +13,7 @@ export function SearchNews() {
     useMultiAPICall(query);
 
   useEffect(() => {
+    console.log(newsApiData);
     if (!isLoading && !error) {
       let combinedArray = [];
       console.log(nytData, newsApiData, gnewsData);
@@ -120,12 +121,15 @@ export function SearchNews() {
   return (
     <div className="w-full">
       <div className="flex w-full justify-center p-2">
-        <label htmlFor="filter">Sort by: </label>
+        <label htmlFor="filter" className="pr-2 text-foreground">
+          Sort by:
+        </label>
         <select
           id="filter"
           name="filter"
           value={sortOption}
           onChange={handleSortChange}
+          className="rounded-lg"
         >
           <option value="newer">Newer</option>
           <option value="older">Older</option>
