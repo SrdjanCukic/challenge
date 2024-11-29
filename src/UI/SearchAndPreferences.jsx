@@ -6,16 +6,22 @@ import Divider from '@mui/material/Divider';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../service/GlobalContext.jsx';
 
-const SearchAndPreferences = ({ toggleModal }) => {
+const SearchAndPreferences = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const { dispatch } = useGlobalContext();
 
   const onSubmit = e => {
     e.preventDefault();
     if (searchQuery === '') return;
     navigate(`/search/${searchQuery}`);
     setSearchQuery('');
+  };
+
+  const openModal = () => {
+    dispatch({ type: 'OPEN_MODAL' });
   };
 
   return (
@@ -35,9 +41,9 @@ const SearchAndPreferences = ({ toggleModal }) => {
             ml: 1,
             flex: 1,
             width: {
-              sm: 200, // 200px on small screens
-              md: 300, // 300px on medium screens
-              lg: 400, // 400px on large screens
+              sm: 200,
+              md: 300,
+              lg: 400,
             },
           }}
           placeholder="Search News"
@@ -50,7 +56,7 @@ const SearchAndPreferences = ({ toggleModal }) => {
           <SearchIcon />
         </IconButton>
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <IconButton sx={{ p: '10px' }} onClick={toggleModal}>
+        <IconButton sx={{ p: '10px' }} onClick={openModal}>
           <ManageSearchIcon />
         </IconButton>
       </Paper>

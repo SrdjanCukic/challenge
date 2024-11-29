@@ -12,50 +12,26 @@ const NewsFeed = () => {
   const [sortedData, setSortedData] = useState([]);
   const [sortOption, setSortOption] = useState('newer');
 
-  const {
-    data: nyTimes,
-    isLoading: isLoading1,
-    error: error1,
-  } = useApiFetch(
-    'https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=cg4vzM2CAqeJM2Ojw8zIZHZyEs40LVhS',
+  const { data, isLoading, error } = useApiFetch(
+    'https://global-puls-api.onrender.com/api',
+    // 'http://localhost:3000/api',
   );
 
-  const {
-    data: newsApi,
-    isLoading: isLoading2,
-    error: error2,
-  } = useApiFetch(
-    'https://newsapi.org/v2/top-headlines?country=us&apiKey=f5f8bc54714e4aad8ee2fbca3b0573cd',
-  );
-
-  const {
-    data: gNewsApi,
-    isLoading: isLoading3,
-    error: error3,
-  } = useApiFetch(
-    'https://gnews.io/api/v4/top-headlines?category=general&lang=en&country=us&max=10&apikey=2af35c159a71bbcede539fe4c21ad3e5',
-  );
+  const { nyt, newsapi, gnews } = data || {};
 
   useEffect(() => {
-    if (
-      !isLoading1 &&
-      !isLoading2 &&
-      !isLoading3 &&
-      !error1 &&
-      !error2 &&
-      !error3
-    ) {
+    if (!isLoading && !error) {
       let combinedArray = [];
 
       const sourcesArray = sources.split(',');
 
       if (
-        nyTimes &&
-        Array.isArray(nyTimes.results) &&
+        nyt &&
+        Array.isArray(nyt.results) &&
         sourcesArray.includes('The New York Times')
       ) {
         combinedArray = combinedArray.concat(
-          nyTimes.results.map(article => ({
+          nyt.results.map(article => ({
             ...article,
             source: 'The New York Times',
           })),
@@ -63,12 +39,12 @@ const NewsFeed = () => {
       }
 
       if (
-        newsApi &&
-        Array.isArray(newsApi.articles) &&
+        newsapi &&
+        Array.isArray(newsapi.articles) &&
         sourcesArray.includes('News Api')
       ) {
         combinedArray = combinedArray.concat(
-          newsApi.articles.map(article => ({
+          newsapi.articles.map(article => ({
             ...article,
             source: 'News Api',
           })),
@@ -76,12 +52,12 @@ const NewsFeed = () => {
       }
 
       if (
-        gNewsApi &&
-        Array.isArray(gNewsApi.articles) &&
+        gnews &&
+        Array.isArray(gnews.articles) &&
         sourcesArray.includes(' Gnews')
       ) {
         combinedArray = combinedArray.concat(
-          gNewsApi.articles.map(article => ({
+          gnews.articles.map(article => ({
             ...article,
             source: ' Gnews',
           })),
@@ -95,18 +71,7 @@ const NewsFeed = () => {
 
       setCombinedData(finalCombinedArray);
     }
-  }, [
-    isLoading1,
-    isLoading2,
-    isLoading3,
-    error1,
-    error2,
-    error3,
-    gNewsApi,
-    newsApi,
-    nyTimes,
-    sources,
-  ]);
+  }, [isLoading, error, gnews, newsapi, nyt, sources]);
 
   useEffect(() => {
     let sortedArray = [...combinedData];
@@ -137,7 +102,7 @@ const NewsFeed = () => {
 
   // Render content based on the state of the API call
 
-  if (isLoading1 && isLoading2 && isLoading3) {
+  if (isLoading) {
     return (
       <Backdrop
         sx={theme => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
@@ -148,31 +113,26 @@ const NewsFeed = () => {
     );
   }
 
-  if (error1 && error2 && error3) {
-    return <div>Error: {error1 && error2 && error3}</div>;
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
-  if (
-    !isLoading1 &&
-    !isLoading2 &&
-    !isLoading3 &&
-    !error1 &&
-    !error2 &&
-    !error3 &&
-    combinedData.length === 0
-  ) {
+  if (!isLoading && !error && combinedData.length === 0) {
     return <div>No results found.</div>;
   }
 
   return (
     <div>
       <div className="flex w-full justify-center p-2">
-        <label htmlFor="filter">Sort by: </label>
+        <label htmlFor="filter" className="pr-2 text-foreground">
+          Sort by:{' '}
+        </label>
         <select
           id="filter"
           name="filter"
           value={sortOption}
           onChange={handleSortChange}
+          className="rounded-lg"
         >
           <option value="newer">Newer</option>
           <option value="older">Older</option>
