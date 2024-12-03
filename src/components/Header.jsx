@@ -1,6 +1,7 @@
 import SearchAndPreferences from '../UI/SearchAndPreferences';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import { Link } from 'react-router-dom';
+import Example from '../UI/ToggleTheme';
 
 function Header() {
   return (
@@ -17,6 +18,7 @@ function Header() {
           </div>
         </Link>
         <SearchAndPreferences />
+        <Example />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import useMultiAPICall from '../service/useSearchFetch';
 import Article from './Article';
 import { useParams } from 'react-router-dom';
 import { Backdrop, CircularProgress } from '@mui/material';
+import StaggeredDropDown from './DropdownMenus/SearchDropMenu';
 
 export function SearchNews() {
   const { query } = useParams();
@@ -13,10 +14,9 @@ export function SearchNews() {
     useMultiAPICall(query);
 
   useEffect(() => {
-    console.log(newsApiData);
     if (!isLoading && !error) {
       let combinedArray = [];
-      console.log(nytData, newsApiData, gnewsData);
+
       if (Array.isArray(nytData)) {
         const nytDocs = nytData.map(doc => ({
           ...doc,
@@ -89,10 +89,6 @@ export function SearchNews() {
     setSortedData(sortedArray);
   }, [sortOption, combinedData]);
 
-  const handleSortChange = event => {
-    setSortOption(event.target.value);
-  };
-
   if (isLoading) {
     return (
       <Backdrop
@@ -121,22 +117,7 @@ export function SearchNews() {
   return (
     <div className="w-full">
       <div className="flex w-full justify-center p-2">
-        <label htmlFor="filter" className="pr-2 text-foreground">
-          Sort by:
-        </label>
-        <select
-          id="filter"
-          name="filter"
-          value={sortOption}
-          onChange={handleSortChange}
-          className="rounded-lg"
-        >
-          <option value="newer">Newer</option>
-          <option value="older">Older</option>
-          <option value="The New York Times">The New York Times</option>
-          <option value="News Api">News Api</option>
-          <option value="Gnews">Gnews</option>
-        </select>
+        <StaggeredDropDown setSortOption={setSortOption} />
       </div>
       <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
         {sortedData.slice(0, 27).map((value, index) => (

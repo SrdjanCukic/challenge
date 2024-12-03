@@ -5,7 +5,7 @@ import SearchArticles from './components/SearchArticles';
 import OnMountApi from './components/OnMountApi';
 import NewsFeedPersonalized from './components/NewsFeedPersonalized';
 import Error from './UI/Error';
-import { GlobalProvider } from './service/GlobalContext.jsx';
+import { GlobalProvider, useGlobalContext } from './service/GlobalContext.jsx';
 
 function App() {
   return (
