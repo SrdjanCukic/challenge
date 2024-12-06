@@ -1,8 +1,8 @@
-import NewsFeed from "../UI/NewsFeed";
+import NewsFeed from '../UI/NewsFeed';
 
 function NewsFeedPersonalized() {
   return (
-    <div>
+    <div className="w-full">
       <NewsFeed />
     </div>
   );

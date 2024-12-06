@@ -4,6 +4,7 @@ import Article from './Article';
 import useApiFetch from '../service/useApiFetch';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Backdrop } from '@mui/material';
+import StaggeredDropDown from './DropdownMenus/NewsFeedMenu';
 
 const NewsFeed = () => {
   const { params } = useParams();
@@ -96,12 +97,6 @@ const NewsFeed = () => {
     setSortedData(sortedArray);
   }, [sortOption, combinedData]);
 
-  const handleSortChange = event => {
-    setSortOption(event.target.value);
-  };
-
-  // Render content based on the state of the API call
-
   if (isLoading) {
     return (
       <Backdrop
@@ -122,23 +117,10 @@ const NewsFeed = () => {
   }
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex w-full justify-center p-2">
-        <label htmlFor="filter" className="pr-2 text-foreground">
-          Sort by:{' '}
-        </label>
-        <select
-          id="filter"
-          name="filter"
-          value={sortOption}
-          onChange={handleSortChange}
-          className="rounded-lg"
-        >
-          <option value="newer">Newer</option>
-          <option value="older">Older</option>
-        </select>
+        <StaggeredDropDown setSortOption={setSortOption} />
       </div>
-
       <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
         {sortedData.slice(0, 30).map((value, index) => (
           <Article key={index} data={value} />

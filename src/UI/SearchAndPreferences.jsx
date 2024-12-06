@@ -41,23 +41,49 @@ const SearchAndPreferences = () => {
             ml: 1,
             flex: 1,
             width: {
+              xs: 50,
               sm: 200,
-              md: 300,
-              lg: 400,
+              md: 200,
+              lg: 200,
             },
           }}
-          placeholder="Search News"
+          placeholder="Search"
           type={'text'}
           color="secondary"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />
-        <IconButton type="submit" sx={{ p: '10px' }}>
+        <IconButton
+          type="submit"
+          sx={{
+            p: '5px',
+            display: {
+              xs: 'none',
+              sm: 'block',
+              md: 'block',
+              lg: 'block',
+              xl: 'none',
+            },
+          }}
+        >
           <SearchIcon />
         </IconButton>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <Divider
+          sx={{
+            height: 28,
+            m: 0.5,
+            display: {
+              xs: 'none',
+              sm: 'block',
+              md: 'block',
+              lg: 'block',
+              xl: 'none',
+            },
+          }}
+          orientation="vertical"
+        />
         <IconButton sx={{ p: '10px' }} onClick={openModal}>
-          <ManageSearchIcon />
+          <ManageSearchIcon inert="true" />
         </IconButton>
       </Paper>
     </div>

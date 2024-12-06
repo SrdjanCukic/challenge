@@ -12,7 +12,7 @@
     --gradient-from: 14 165 233;
     --gradient-to: 99 102 241;
   }
-  body {
+  body.light {
     --primary: 59 130 246;
     --foreground: 0 0 0;
     --background: 255 255 255;
