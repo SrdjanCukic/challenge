@@ -28,9 +28,11 @@ const StaggeredDropDown = ({ setSortOption }) => {
       <motion.div animate={open ? 'open' : 'closed'} className="relative">
         <button
           onClick={() => setOpen(pv => !pv)}
-          className="flex items-center gap-2 rounded-md bg-indigo-500 px-3 py-2 text-indigo-50 transition-colors hover:bg-indigo-500"
+          className="flex items-center gap-2 rounded-md bg-gradient-to-r from-primary/70 to-primary/20 px-3 py-2 text-indigo-50 transition-colors hover:bg-foreground/50"
         >
-          <span className="text-sm font-medium">Sort By:</span>
+          <span className="whitespace-nowrap text-sm font-medium">
+            Sort By:
+          </span>
           <motion.span variants={iconVariants}>
             <FiChevronDown />
           </motion.span>
