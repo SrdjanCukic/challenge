@@ -28,6 +28,7 @@ const SearchAndPreferences = () => {
     <div>
       <Paper
         component="form"
+        className="bg-gradient-to-r from-primary to-primary/20"
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -49,7 +50,7 @@ const SearchAndPreferences = () => {
           }}
           placeholder="Search"
           type={'text'}
-          color="secondary"
+          className="bg-transparent"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />

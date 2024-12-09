@@ -34,7 +34,7 @@ const SliderToggle = ({ selected, setSelected }) => {
     <div className="relative flex w-fit items-center rounded-full">
       <button
         className={`${TOGGLE_CLASSES} ${
-          selected === 'light' ? 'text-white' : 'text-slate-300'
+          selected === 'light' ? 'text-foreground' : 'text-slate-300'
         }`}
         onClick={() => handleLight()}
       >
@@ -43,7 +43,7 @@ const SliderToggle = ({ selected, setSelected }) => {
       </button>
       <button
         className={`${TOGGLE_CLASSES} ${
-          selected === 'dark' ? 'text-white' : 'text-slate-800'
+          selected === 'dark' ? 'text-foreground' : 'text-slate-800'
         }`}
         onClick={() => handleDark()}
       >
@@ -58,7 +58,7 @@ const SliderToggle = ({ selected, setSelected }) => {
         <motion.span
           layout
           transition={{ type: 'spring', damping: 15, stiffness: 250 }}
-          className="h-full w-1/2 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600"
+          className="h-full w-1/2 rounded-full bg-gradient-to-r from-primary to-primary/20"
         />
       </div>
     </div>
