@@ -63,7 +63,7 @@ const SearchAndPreferences = () => {
               sm: 'block',
               md: 'block',
               lg: 'block',
-              xl: 'none',
+              xl: 'block',
             },
           }}
         >
