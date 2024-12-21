@@ -34,24 +34,29 @@ function OnMountApi() {
 
     // Combine processed articles
     const allArticles = [
-      ...processedDataNewsApi.map((article, index) => ({
+      ...processedDataNewsApi.map(article => ({
         ...article,
-        key: `newsapi-${index}`,
+        key: article.url,
       })),
-      ...processedDataGNewsApi.map((article, index) => ({
+      ...processedDataGNewsApi.map(article => ({
         ...article,
-        key: `gnews-${index}`,
+        key: article.url,
       })),
-      ...processedDataNyTimes.map((article, index) => ({
+      ...processedDataNyTimes.map(article => ({
         ...article,
-        key: `nyt-${index}`,
+        key: article.url,
       })),
     ];
 
+    const uniqueArticles = allArticles.filter(
+      (article, index, self) =>
+        index === self.findIndex(a => a.key === article.key),
+    );
+
     return (
       <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
-        {allArticles.map(article => (
-          <Article key={article.key} data={article} />
+        {uniqueArticles.map(article => (
+          <Article key={article.url} data={article} />
         ))}
       </div>
     );

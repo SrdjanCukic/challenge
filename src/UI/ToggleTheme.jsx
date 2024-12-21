@@ -37,14 +37,12 @@ const SliderToggle = ({ selected, setSelected }) => {
         onClick={() => handleLight()}
       >
         <FiSun className="relative z-10 text-lg md:text-sm" />
-        <span className="relative z-10">Light</span>
       </button>
       <button
         className={`${TOGGLE_CLASSES} text-foreground`}
         onClick={() => handleDark()}
       >
         <FiMoon className="relative z-10 text-lg md:text-sm" />
-        <span className="relative z-10">Dark</span>
       </button>
       <div
         className={`absolute inset-0 z-0 flex ${
@@ -54,7 +52,7 @@ const SliderToggle = ({ selected, setSelected }) => {
         <motion.span
           layout
           transition={{ type: 'spring', damping: 15, stiffness: 250 }}
-          className="h-full w-1/2 rounded-full bg-gradient-to-r from-primary to-primary/20"
+          className="h-full w-1/2 rounded-full bg-gradient-to-r from-primary/40 to-primary/20"
         />
       </div>
     </div>

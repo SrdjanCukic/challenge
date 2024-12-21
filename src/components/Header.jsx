@@ -17,8 +17,10 @@ function Header() {
             Global Pulse
           </div>
         </Link>
-        <SearchAndPreferences />
-        <Example />
+        <div className="flex items-center gap-4">
+          <SearchAndPreferences />
+          <Example />
+        </div>
       </div>
     </div>
   );
