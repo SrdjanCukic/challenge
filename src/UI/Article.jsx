@@ -81,7 +81,7 @@ function Article(props) {
 
   return (
     <div
-      className={`relative min-h-[300px] flex-grow items-end justify-center overflow-hidden rounded bg-background-card caret-transparent shadow-md ${image ? '' : 'bg-gradient-gradient-from to-gradient-to'}`}
+      className={`relative m-1 min-h-[300px] flex-grow items-end justify-center overflow-hidden rounded bg-background-card caret-transparent shadow-md ${image ? '' : 'bg-gradient-gradient-from to-gradient-to'}`}
       style={{
         backgroundImage: image ? `url(${image})` : '',
         backgroundSize: 'cover',

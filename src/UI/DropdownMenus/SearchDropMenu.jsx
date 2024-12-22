@@ -32,9 +32,11 @@ const StaggeredDropDown = ({ setSortOption }) => {
       <motion.div animate={open ? 'open' : 'closed'} className="relative">
         <button
           onClick={() => setOpen(pv => !pv)}
-          className="flex items-center gap-2 rounded-md bg-indigo-500 px-3 py-2 text-indigo-50 transition-colors hover:bg-indigo-500"
+          className="flex items-center gap-2 rounded-md bg-gradient-to-r from-primary/70 to-primary/20 px-3 py-2 text-indigo-50 transition-colors hover:bg-foreground/50"
         >
-          <span className="text-sm font-medium">Sort By:</span>
+          <span className="whitespace-nowrap text-sm font-medium">
+            Sort By:
+          </span>
           <motion.span variants={iconVariants}>
             <FiChevronDown />
           </motion.span>
@@ -44,7 +46,7 @@ const StaggeredDropDown = ({ setSortOption }) => {
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: 'top', translateX: '-50%' }}
-          className="absolute left-[50%] top-[120%] z-50 flex w-48 flex-col gap-2 overflow-hidden rounded-lg bg-white p-2 shadow-xl"
+          className="absolute left-[50%] top-[120%] z-50 flex w-48 flex-col gap-2 overflow-hidden rounded-lg bg-background-card p-2 shadow-xl"
         >
           <Option
             value="newer"
@@ -95,7 +97,7 @@ const Option = ({ value, text, Icon, setOpen, setSortOption }) => {
         setSortOption(value);
         setOpen(false);
       }}
-      className="flex w-full cursor-pointer items-center gap-2 whitespace-nowrap rounded-md p-2 text-xs font-medium text-slate-700 transition-colors hover:bg-indigo-100 hover:text-indigo-500"
+      className="flex w-full cursor-pointer items-center gap-2 whitespace-nowrap rounded-md p-2 text-xs font-medium text-foreground transition-colors hover:bg-primary/60 hover:text-foreground"
     >
       <motion.span variants={actionIconVariants}>
         <Icon />

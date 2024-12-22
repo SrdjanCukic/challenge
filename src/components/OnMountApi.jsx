@@ -17,27 +17,46 @@ function OnMountApi() {
     // Process data from each API
     const processedDataNyTimes =
       nyt?.results
-        ?.filter(item => item.abstract !== '[Removed]')
+        ?.filter(item => item.abstract && item.abstract !== '[Removed]')
         ?.slice(0, 3) || [];
     const processedDataNewsApi =
       newsapi?.articles
-        ?.filter(item => item.content !== '[Removed]')
+        ?.filter(
+          item => item.content && item.content !== '[Removed]' && item.url,
+        ) // Ensure the article has content and a valid URL
         ?.slice(0, 3) || [];
     const processedDataGNewsApi =
       gnews?.articles
-        ?.filter(item => item.content !== '[Removed]')
+        ?.filter(
+          item => item.content && item.content !== '[Removed]' && item.url,
+        ) // Ensure the article has content and a valid URL
         ?.slice(0, 3) || [];
+
+    // Combine processed articles
+    const allArticles = [
+      ...processedDataNewsApi.map(article => ({
+        ...article,
+        key: article.url,
+      })),
+      ...processedDataGNewsApi.map(article => ({
+        ...article,
+        key: article.url,
+      })),
+      ...processedDataNyTimes.map(article => ({
+        ...article,
+        key: article.url,
+      })),
+    ];
+
+    const uniqueArticles = allArticles.filter(
+      (article, index, self) =>
+        index === self.findIndex(a => a.key === article.key),
+    );
 
     return (
       <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
-        {processedDataNewsApi.map((value, index) => (
-          <Article key={`newsapi-${index}`} data={value} />
-        ))}
-        {processedDataGNewsApi.map((value, index) => (
-          <Article key={`gnews-${index}`} data={value} />
-        ))}
-        {processedDataNyTimes.map((value, index) => (
-          <Article key={`nyt-${index}`} data={value} />
+        {uniqueArticles.map(article => (
+          <Article key={article.url} data={article} />
         ))}
       </div>
     );

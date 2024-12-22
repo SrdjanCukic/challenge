@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 
 const GlobalContext = createContext();
-const initialTheme = localStorage.getItem('theme') || 'light';
+const initialTheme = localStorage.getItem('theme') || 'dark';
 
 const initialState = {
   isModalOpen: false,

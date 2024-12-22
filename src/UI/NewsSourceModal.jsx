@@ -4,10 +4,10 @@ import {
   Checkbox,
   Dialog,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   Stack,
+  Typography,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -75,18 +75,29 @@ const NewsSourceModal = () => {
         fullWidth
         keepMounted={false}
       >
-        <form onSubmit={handleSave}>
-          <DialogTitle>Select at least one source:</DialogTitle>
-          <Divider />
+        <form
+          onSubmit={handleSave}
+          className="bg-background-mode text-foreground"
+        >
+          <DialogTitle className="bg-background-mode">
+            Select at least one source:
+          </DialogTitle>
+          <Divider className="bg-primary" />
           {error && <Alert severity="warning">{error}</Alert>}
-          <DialogContent>
-            <DialogContentText>Sources:</DialogContentText>
+          <DialogContent className="bg-background-mode">
+            <Typography className="text-foreground">Sources:</Typography>
             <Stack>
               {Object.keys(sources).map(source => (
                 <label key={source}>
                   <Checkbox
                     checked={sources[source]}
                     onChange={() => handleSourceChange(source)}
+                    sx={{
+                      color: 'rgb(var(--primary))',
+                      '&.Mui-checked': {
+                        color: 'rgb(var(--primary))',
+                      },
+                    }}
                   />
                   {source}
                 </label>
@@ -97,24 +108,13 @@ const NewsSourceModal = () => {
             direction="row"
             spacing={2}
             divider={<Divider orientation="vertical" flexItem />}
-            sx={{
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginBottom: '30px',
-              marginRight: '30px',
-            }}
+            className="mb-7 mr-7 flex justify-end bg-background-mode align-middle"
           >
-            <Button
-              type="button"
-              variant="outlined"
-              color="error"
-              onClick={handleCloseModal}
-            >
+            <Button type="button" onClick={handleCloseModal}>
               Cancel
             </Button>
-            <Button variant="outlined" type="submit">
-              Save
-            </Button>
+
+            <Button type="submit">Save</Button>
           </Stack>
         </form>
       </Dialog>
