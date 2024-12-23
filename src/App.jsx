@@ -10,6 +10,11 @@ import { createTheme, ThemeProvider } from '@mui/material';
 
 const theme = createTheme({
   palette: {
+    text: {
+      primary: 'rgb(var(--foreground))',
+      secondary: 'rgb(var(--foreground)/70%)',
+      disabled: 'rgb(var(--foreground)/50%)',
+    },
     primary: {
       main: 'rgb(var(--primary))',
     },

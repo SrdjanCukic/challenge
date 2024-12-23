@@ -94,12 +94,12 @@ function Article(props) {
         rel="noopener noreferrer"
         aria-label={title}
         className={
-          'absolute right-0 top-0 rounded bg-background/60 object-right p-1 text-primary opacity-100'
+          'absolute right-0 top-0 rounded bg-background/70 backdrop-blur-lg object-right p-1 text-primary opacity-100'
         }
       >
         <OpenInNewIcon />
       </a>
-      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-background/60 p-4 backdrop-blur-lg">
+      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-background/70 p-4 backdrop-blur-lg">
         <h1 className="line-clamp-1 font-bold text-primary">{title}</h1>
 
         <hr className="my-2w h-1 border-0 bg-primary opacity-100" />
