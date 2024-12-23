@@ -10,9 +10,8 @@ const TOGGLE_CLASSES =
 
 const Example = () => {
   const [selected, setSelected] = useState(initialTheme);
-  //
   return (
-    <div className={`grid h-[44px] place-content-center px-2`}>
+    <div className={`grid h-[44px] place-content-center`}>
       <SliderToggle selected={selected} setSelected={setSelected} />
     </div>
   );

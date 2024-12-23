@@ -32,7 +32,7 @@ const StaggeredDropDown = ({ setSortOption }) => {
       <motion.div animate={open ? 'open' : 'closed'} className="relative">
         <button
           onClick={() => setOpen(pv => !pv)}
-          className="flex items-center gap-2 rounded-md bg-gradient-to-r from-primary/70 to-primary/20 px-3 py-2 text-indigo-50 transition-colors hover:bg-foreground/50"
+          className="flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/40 to-primary/20 px-3 py-2 text-foreground transition-colors hover:bg-background/50"
         >
           <span className="whitespace-nowrap text-sm font-medium">
             Sort By:

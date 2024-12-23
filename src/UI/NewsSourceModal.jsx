@@ -92,12 +92,6 @@ const NewsSourceModal = () => {
                   <Checkbox
                     checked={sources[source]}
                     onChange={() => handleSourceChange(source)}
-                    sx={{
-                      color: 'rgb(var(--primary))',
-                      '&.Mui-checked': {
-                        color: 'rgb(var(--primary))',
-                      },
-                    }}
                   />
                   {source}
                 </label>
@@ -110,7 +104,7 @@ const NewsSourceModal = () => {
             divider={<Divider orientation="vertical" flexItem />}
             className="mb-7 mr-7 flex justify-end bg-background-mode align-middle"
           >
-            <Button type="button" onClick={handleCloseModal}>
+            <Button type="button" onClick={handleCloseModal} color='error'>
               Cancel
             </Button>
 
