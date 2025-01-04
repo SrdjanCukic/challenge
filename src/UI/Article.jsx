@@ -94,7 +94,7 @@ function Article(props) {
         rel="noopener noreferrer"
         aria-label={title}
         className={
-          'absolute right-0 top-0 rounded bg-background/70 backdrop-blur-lg object-right p-1 text-primary opacity-100'
+          'absolute right-0 top-0 rounded bg-background/70 object-right p-1 text-primary opacity-100 backdrop-blur-lg'
         }
       >
         <OpenInNewIcon />
@@ -111,8 +111,8 @@ function Article(props) {
         </div>
 
         <div className="mt-2 flex w-auto flex-row justify-between opacity-70">
-          <div className="text-primary">{date}</div>
-          <div className="max-w-[200px] truncate text-primary">
+          <div className="p-2 text-primary">{date}</div>
+          <div className="max-w-[200px] truncate p-2 text-primary">
             {author ? author : source}
           </div>
         </div>

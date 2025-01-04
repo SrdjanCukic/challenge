@@ -1,6 +1,7 @@
 import Loader from '../UI/Loader';
 import useApiFetch from '../service/useApiFetch';
 import Article from '../UI/Article';
+import HeroSection from '../UI/HeroSection';
 
 function OnMountApi() {
   const { data, isLoading, error } = useApiFetch(
@@ -32,32 +33,37 @@ function OnMountApi() {
         ) // Ensure the article has content and a valid URL
         ?.slice(0, 3) || [];
 
-    // Combine processed articles
-    const allArticles = [
-      ...processedDataNewsApi.map(article => ({
-        ...article,
-        key: article.url,
-      })),
-      ...processedDataGNewsApi.map(article => ({
-        ...article,
-        key: article.url,
-      })),
-      ...processedDataNyTimes.map(article => ({
-        ...article,
-        key: article.url,
-      })),
-    ];
-
-    const uniqueArticles = allArticles.filter(
-      (article, index, self) =>
-        index === self.findIndex(a => a.key === article.key),
-    );
-
     return (
-      <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
-        {uniqueArticles.map(article => (
-          <Article key={article.url} data={article} />
-        ))}
+      <div>
+        <HeroSection />
+        <div className="mx-auto flex w-screen flex-col items-center p-4 md:max-w-screen-2xl">
+          <div className="mb-8 w-full text-center">
+            <div className="mb-4 text-2xl text-foreground">
+              The New York Times
+            </div>
+            <div className="flex flex-col gap-4 md:flex-row">
+              {processedDataNyTimes.map(article => (
+                <Article key={article.url} data={article} />
+              ))}
+            </div>
+          </div>
+          <div className="mb-8 w-full text-center">
+            <div className="mb-4 text-2xl text-foreground">News API</div>
+            <div className="flex flex-col gap-4 md:flex-row">
+              {processedDataNewsApi.map(article => (
+                <Article key={article.url} data={article} />
+              ))}
+            </div>
+          </div>
+          <div className="mb-8 w-full text-center">
+            <div className="mb-4 text-2xl text-foreground">GNews</div>
+            <div className="flex flex-col gap-4 md:flex-row">
+              {processedDataGNewsApi.map(article => (
+                <Article key={article.url} data={article} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

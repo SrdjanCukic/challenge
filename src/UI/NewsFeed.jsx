@@ -12,7 +12,6 @@ const NewsFeed = () => {
   const [combinedData, setCombinedData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [sortOption, setSortOption] = useState('newer');
-
   const { data, isLoading, error } = useApiFetch(
     'https://global-puls-api.onrender.com/api',
     // 'http://localhost:3000/api',
@@ -55,12 +54,12 @@ const NewsFeed = () => {
       if (
         gnews &&
         Array.isArray(gnews.articles) &&
-        sourcesArray.includes(' Gnews')
+        sourcesArray.includes('Gnews')
       ) {
         combinedArray = combinedArray.concat(
           gnews.articles.map(article => ({
             ...article,
-            source: ' Gnews',
+            source: 'Gnews',
           })),
         );
       }
@@ -109,17 +108,49 @@ const NewsFeed = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="mt-10 flex justify-center text-2xl text-foreground">
+        Error: {error}
+      </div>
+    );
   }
 
   if (!isLoading && !error && combinedData.length === 0) {
-    return <div>No results found.</div>;
+    return (
+      <div className="mt-10 flex justify-center text-2xl text-foreground">
+        No results found.
+      </div>
+    );
   }
 
   return (
-    <div className="w-full">
-      <div className="flex w-full justify-center p-2">
-        <StaggeredDropDown setSortOption={setSortOption} />
+    <div className="mx-auto flex max-w-screen-2xl flex-col items-center p-4">
+      <div className="flex w-full flex-col justify-center p-2 align-middle md:flex-row md:justify-between md:align-middle">
+        <div className="justify-centre mb-4 flex w-full flex-col gap-2 align-middle sm:gap-4 md:mb-0 md:flex-row">
+          <div className="m-1 p-2 text-center text-foreground">
+            Sources selected:
+          </div>
+          <div className="flex flex-col gap-2 sm:gap-2 md:flex-row">
+            {sources.includes('The New York Times') && (
+              <div className="m-1 whitespace-nowrap rounded-full bg-gradient-to-r from-primary/40 to-primary/20 p-2 px-3 py-2 text-center text-foreground transition-colors">
+                The New York Times
+              </div>
+            )}
+            {sources.includes('News Api') && (
+              <div className="m-1 whitespace-nowrap rounded-full bg-gradient-to-r from-primary/40 to-primary/20 p-2 px-3 py-2 text-center text-foreground transition-colors">
+                News Api
+              </div>
+            )}
+            {sources.includes('Gnews') && (
+              <div className="m-1 whitespace-nowrap rounded-full bg-gradient-to-r from-primary/40 to-primary/20 p-2 px-3 py-2 text-center text-foreground transition-colors">
+                Gnews
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex w-full justify-center md:w-1/2 md:justify-end md:align-top">
+          <StaggeredDropDown setSortOption={setSortOption} />
+        </div>
       </div>
       <div className="grid w-full grid-cols-1 gap-1 p-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
         {sortedData.slice(0, 30).map((value, index) => (
