@@ -22,7 +22,7 @@ const StaggeredDropDown = ({ setSortOption }) => {
 
   return (
     <div
-      className="flex w-[100px] items-center justify-center pb-3"
+      className="flex w-[100px] items-center justify-center md:align-top"
       ref={dropdownRef}
     >
       <motion.div animate={open ? 'open' : 'closed'} className="relative">

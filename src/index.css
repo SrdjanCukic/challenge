@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    overflow-x: clip;
+  }
   body.dark {
-    --primary: 234 179 8;
+    --primary: 255 200 87;
     --foreground: 225 225 225;
     --background: 0 0 0;
     --background-card: 71 85 105;

@@ -10,6 +10,7 @@ export function SearchNews() {
   const [combinedData, setCombinedData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [sortOption, setSortOption] = useState('newer');
+
   const { nytData, newsApiData, gnewsData, isLoading, error } =
     useMultiAPICall(query);
 
@@ -111,12 +112,20 @@ export function SearchNews() {
     newsApiData.length === 0 &&
     gnewsData.length === 0
   ) {
-    return <div>No results found.</div>;
+    return (
+      <div className="mt-10 flex justify-center text-2xl text-foreground">
+        No results found for: {query}
+      </div>
+    );
   }
 
   return (
-    <div className="w-full">
-      <div className="flex w-full justify-center p-2">
+    <div className="ml-auto mr-auto flex max-w-screen-2xl flex-col items-center p-4">
+      <div className="flex w-full justify-between p-2">
+        <div className="flex justify-between">
+          <div className="text-foreground">Showing results for:</div>
+          <div className="pl-2 text-primary">{query}</div>
+        </div>
         <StaggeredDropDown setSortOption={setSortOption} />
       </div>
       <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
