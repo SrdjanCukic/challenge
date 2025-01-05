@@ -6,7 +6,7 @@ import Example from '../UI/ToggleTheme';
 function Header() {
   return (
     <div className="sticky top-0 z-50 w-dvw border-b border-background/50 bg-background/40 backdrop-blur-md">
-      <div className="container flex items-center justify-between gap-4 px-10 py-4">
+      <div className="mx-auto container flex items-center justify-between gap-4 px-10 py-4">
         <Link
           to="/"
           className="flex items-center text-inherit no-underline"
