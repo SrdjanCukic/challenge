@@ -1,117 +1,86 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import useMultiAPICall from '../service/useSearchFetch';
 import Article from './Article';
-import { useParams } from 'react-router-dom';
-import { Backdrop, CircularProgress } from '@mui/material';
+import SkeletonArticle from './SkeletonArticle';
 import StaggeredDropDown from './DropdownMenus/SearchDropMenu';
+import BasicTablePagination from './Pagination';
 
 export function SearchNews() {
   const { query } = useParams();
-  const [combinedData, setCombinedData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [sortOption, setSortOption] = useState('newer');
+  const { articles, isLoading, error } = useMultiAPICall(query);
 
-  const { nytData, newsApiData, gnewsData, isLoading, error } =
-    useMultiAPICall(query);
+  // Pagination state
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(9);
 
   useEffect(() => {
     if (!isLoading && !error) {
-      let combinedArray = [];
+      // If articles are available, sort them
+      let sortedArray = [...articles];
 
-      if (Array.isArray(nytData)) {
-        const nytDocs = nytData.map(doc => ({
-          ...doc,
-          source: 'The New York Times',
-        }));
-        combinedArray = combinedArray.concat(nytDocs);
-      } else {
-        console.log('NYT Data is missing or not formatted correctly');
+      // Sort the data based on selected option
+      switch (sortOption) {
+        case 'newer':
+          sortedArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+          break;
+        case 'older':
+          sortedArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+          break;
+        default:
+          break;
       }
 
-      if (Array.isArray(newsApiData)) {
-        const newsApiArticles = newsApiData.map(article => ({
-          ...article,
-          source: 'News Api',
-        }));
-        combinedArray = combinedArray.concat(newsApiArticles);
-      } else {
-        console.log('News API Data is missing or not formatted correctly');
-      }
+      // Limit to the first 100 articles if there are more than 100
+      sortedArray = sortedArray.slice(0, 100);
 
-      if (Array.isArray(gnewsData)) {
-        const gnewsArticles = gnewsData.map(article => ({
-          ...article,
-          source: 'Gnews',
-        }));
-        combinedArray = combinedArray.concat(gnewsArticles);
-      } else {
-        console.log('GNews Data is missing or not formatted correctly');
-      }
-
-      const finalCombinedArray = combinedArray.filter(
-        item => item.content !== '[Removed]',
-      );
-
-      setCombinedData(finalCombinedArray);
+      // Update sorted data
+      setSortedData(sortedArray);
     }
-  }, [nytData, newsApiData, gnewsData, isLoading, error]);
+  }, [articles, isLoading, error, sortOption]);
 
-  useEffect(() => {
-    let sortedArray = [...combinedData];
-    switch (sortOption) {
-      case 'newer':
-        sortedArray.sort(
-          (a, b) =>
-            new Date(b.pub_date || b.publishedAt) -
-            new Date(a.pub_date || a.publishedAt),
-        );
-        break;
-      case 'older':
-        sortedArray.sort(
-          (a, b) =>
-            new Date(a.pub_date || a.publishedAt) -
-            new Date(b.pub_date || b.publishedAt),
-        );
-        break;
-      case 'The New York Times':
-        sortedArray = sortedArray.filter(
-          item => item.source === 'The New York Times',
-        );
-        break;
-      case 'News Api':
-        sortedArray = sortedArray.filter(item => item.source === 'News Api');
-        break;
-      case 'Gnews':
-        sortedArray = sortedArray.filter(item => item.source === 'Gnews');
-        break;
-      default:
-        break;
-    }
-    setSortedData(sortedArray);
-  }, [sortOption, combinedData]);
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = event => {
+    const value = parseInt(event.target.value, 10);
+    const newRowsPerPage = value % 3 === 0 ? value : Math.ceil(value / 3) * 3;
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+  };
 
   if (isLoading) {
     return (
-      <Backdrop
-        sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
-        open={true}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <div className="ml-auto mr-auto flex max-w-screen-2xl flex-col items-center p-4">
+        <div className="flex w-full justify-between p-2">
+          <div className="flex justify-between">
+            <div className="text-2xl text-foreground">Loading results for:</div>
+            <div className="pl-2 text-2xl text-primary">{query}</div>
+          </div>
+        </div>
+        <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
+          {Array.from({ length: 9 }).map((_, index) => (
+            <SkeletonArticle key={index} />
+          ))}
+        </div>
+      </div>
     );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="mt-10 flex justify-center text-2xl text-foreground">
+        Error: {error.message}
+      </div>
+    );
   }
 
-  if (
-    !isLoading &&
-    !error &&
-    nytData.length === 0 &&
-    newsApiData.length === 0 &&
-    gnewsData.length === 0
-  ) {
+  if (!isLoading && !error && articles.length === 0) {
     return (
       <div className="mt-10 flex justify-center text-2xl text-foreground">
         No results found for: {query}
@@ -120,19 +89,33 @@ export function SearchNews() {
   }
 
   return (
-    <div className="ml-auto mr-auto flex max-w-screen-2xl flex-col items-center p-4">
+    <div className="ml-auto mr-auto flex max-w-screen-2xl flex-col items-center">
       <div className="flex w-full justify-between p-2">
         <div className="flex justify-between">
-          <div className="text-foreground">Showing results for:</div>
-          <div className="pl-2 text-primary">{query}</div>
+          <div className="text-2xl text-foreground">Showing results for:</div>
+          <div className="pl-2 text-2xl text-primary">{query}</div>
         </div>
         <StaggeredDropDown setSortOption={setSortOption} />
       </div>
+
       <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
-        {sortedData.slice(0, 27).map((value, index) => (
-          <Article key={index} data={value} />
-        ))}
+        {sortedData
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map(value => (
+            <Article key={value.link} data={value} />
+          ))}
+      </div>
+      <div className="relative bottom-0 right-0">
+        <BasicTablePagination
+          count={sortedData.length} // Total number of articles
+          page={page} // Current page state
+          rowsPerPage={rowsPerPage} // Current rows per page state
+          onPageChange={handleChangePage} // Update the page state
+          onRowsPerPageChange={handleChangeRowsPerPage} // Update rows per page
+        />
       </div>
     </div>
   );
 }
+
+export default SearchNews;

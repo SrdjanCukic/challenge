@@ -1,7 +1,4 @@
 import { FiChevronDown, FiClock } from 'react-icons/fi';
-import { SiNewyorktimes } from 'react-icons/si';
-import { TbApi } from 'react-icons/tb';
-import { SiGooglenews } from 'react-icons/si';
 import { FaAirFreshener } from 'react-icons/fa';
 
 import { motion } from 'framer-motion';
@@ -61,27 +58,6 @@ const StaggeredDropDown = ({ setSortOption }) => {
             setSortOption={setSortOption}
             Icon={FiClock}
             text="Older"
-          />
-          <Option
-            value="The New York Times"
-            setOpen={setOpen}
-            setSortOption={setSortOption}
-            Icon={SiNewyorktimes}
-            text="The New York Times"
-          />
-          <Option
-            value="News Api"
-            setOpen={setOpen}
-            setSortOption={setSortOption}
-            Icon={TbApi}
-            text="News Api"
-          />
-          <Option
-            value="Gnews"
-            setOpen={setOpen}
-            setSortOption={setSortOption}
-            Icon={SiGooglenews}
-            text="Gnews"
           />
         </motion.ul>
       </motion.div>

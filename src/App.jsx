@@ -2,9 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AppLayout from './UI/AppLayout';
 import './index.css';
 import SearchArticles from './components/SearchArticles';
-import OnMountApi from './components/OnMountApi';
-import NewsFeedPersonalized from './components/NewsFeedPersonalized';
-import Error from './UI/Error';
+import OnMountApi from './UI/HomePage.jsx';
 import { GlobalProvider } from './service/GlobalContext.jsx';
 import { createTheme, ThemeProvider } from '@mui/material';
 
@@ -20,6 +18,28 @@ const theme = createTheme({
     },
     divider: 'rgb(var(--primary))',
   },
+  components: {
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: 'rgb(var(--background))', // Dark background
+          color: 'rgb(var(--foreground))', // Light text
+          borderRadius: '8px',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          color: 'rgb(var(--foreground))',
+          '&:hover': {
+            backgroundColor: 'rgba(146, 140, 140, 0.1)',
+          },
+        },
+      },
+    },
+  },
 });
 
 function App() {
@@ -31,11 +51,6 @@ function App() {
             <Route path="/" element={<AppLayout />}>
               <Route path="/" element={<OnMountApi />} />
               <Route path="search/:query" element={<SearchArticles />} />
-              <Route
-                path="/personalized-news/:params"
-                element={<NewsFeedPersonalized />}
-              />
-              <Route path="/personalized-news/" element={<Error />} />
             </Route>
           </Routes>
         </Router>

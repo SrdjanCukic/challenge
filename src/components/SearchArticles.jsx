@@ -1,6 +1,6 @@
 import { SearchNews } from '../UI/SearchNews';
 
-function FilterAndFind() {
+function SearchArticles() {
   return (
     <div className="w-full p-1">
       <SearchNews />
@@ -8,4 +8,4 @@ function FilterAndFind() {
   );
 }
 
-export default FilterAndFind;
+export default SearchArticles;

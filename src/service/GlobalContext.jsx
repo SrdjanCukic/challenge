@@ -3,9 +3,16 @@ import { createContext, useContext, useEffect, useReducer } from 'react';
 const GlobalContext = createContext();
 const initialTheme = localStorage.getItem('theme') || 'dark';
 
+const DEFAULT_SOURCES = {
+  'New York Times': true,
+  'News Api': true,
+  Gnews: true,
+};
+
 const initialState = {
   isModalOpen: false,
-  theme: initialTheme,
+  theme: localStorage.getItem('theme') || 'dark',
+  selectedSources: DEFAULT_SOURCES, // Add selectedSources to the state
 };
 
 const reducer = (state, action) => {
@@ -14,6 +21,8 @@ const reducer = (state, action) => {
       return { ...state, isModalOpen: true };
     case 'CLOSE_MODAL':
       return { ...state, isModalOpen: false };
+    case 'UPDATE_SOURCES':
+      return { ...state, selectedSources: action.payload };
     case 'LIGHT':
       return { ...state, theme: 'light' };
     case 'DARK':

@@ -10,27 +10,15 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../service/GlobalContext.jsx';
 
-const DEFAULT_SOURCES = {
-  'The New York Times': true,
-  'News Api': true,
-  Gnews: true,
-};
-
 const NewsSourceModal = () => {
-  const navigate = useNavigate();
   const { state, dispatch } = useGlobalContext();
-
-  const [sources, setSources] = useState(() => {
-    const savedSources = localStorage.getItem('newsSources');
-    return savedSources ? JSON.parse(savedSources) : DEFAULT_SOURCES;
-  });
+  const [sources, setSources] = useState(state.selectedSources);
   const [error, setError] = useState('');
 
+  // Check if any source is selected whenever the 'sources' state changes
   useEffect(() => {
-    // Show error if all sources are unselected
     const activeSources = Object.values(sources).filter(Boolean);
     if (activeSources.length === 0) {
       setError('Please select at least one source.');
@@ -49,17 +37,21 @@ const NewsSourceModal = () => {
 
   const handleSave = e => {
     e.preventDefault();
+
+    // Check if at least one source is selected
     const activeSources = Object.keys(sources).filter(
       source => sources[source],
     );
 
-    // Save to local storage on submit
-    localStorage.setItem('newsSources', JSON.stringify(sources));
+    if (activeSources.length === 0) {
+      setError('Please select at least one source.');
+      return; // Prevent saving
+    }
 
-    // Navigate based on active sources
-    const sourcesString = activeSources.join(',');
-    navigate(`/personalized-news/${sourcesString}`);
+    // Dispatch the updated sources to global state
+    dispatch({ type: 'UPDATE_SOURCES', payload: sources });
 
+    // Close the modal
     dispatch({ type: 'CLOSE_MODAL' });
   };
 
@@ -104,7 +96,7 @@ const NewsSourceModal = () => {
             divider={<Divider orientation="vertical" flexItem />}
             className="mb-7 mr-7 flex justify-end bg-background-mode align-middle"
           >
-            <Button type="button" onClick={handleCloseModal} color='error'>
+            <Button type="button" onClick={handleCloseModal} color="error">
               Cancel
             </Button>
 

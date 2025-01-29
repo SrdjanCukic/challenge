@@ -1,4 +1,4 @@
-import OnMountApi from "./OnMountApi";
+import OnMountApi from '../UI/HomePage';
 
 function DisplayHomeSection() {
   return (
