@@ -10,35 +10,20 @@ const theme = createTheme({
   palette: {
     text: {
       primary: 'rgb(var(--foreground))',
-      secondary: 'rgb(var(--foreground)/70%)',
-      disabled: 'rgb(var(--foreground)/50%)',
+      secondary: 'rgb(var(--foreground) / 0.7)',
+      disabled: 'rgb(var(--foreground) / 0.5)',
     },
     primary: {
       main: 'rgb(var(--primary))',
     },
     divider: 'rgb(var(--primary))',
+    background: {
+      default: 'rgb(var(--background))',
+      paper: 'rgb(var(--background-card))',
+    },
   },
-  components: {
-    MuiMenu: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: 'rgb(var(--background))', // Dark background
-          color: 'rgb(var(--foreground))', // Light text
-          borderRadius: '8px',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-        },
-      },
-    },
-    MuiMenuItem: {
-      styleOverrides: {
-        root: {
-          color: 'rgb(var(--foreground))',
-          '&:hover': {
-            backgroundColor: 'rgba(146, 140, 140, 0.1)',
-          },
-        },
-      },
-    },
+  typography: {
+    fontFamily: 'Tinos, serif',
   },
 });
 

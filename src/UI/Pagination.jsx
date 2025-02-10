@@ -21,7 +21,7 @@ export default function BasicTablePagination({
           <span className="inline sm:hidden">Articles</span>
         )
       }
-      className="my-4"
+      className="my-1"
       sx={{
         '& .MuiTablePagination-selectLabel': {
           fontSize: '1.3rem', // Rows per page label
@@ -31,14 +31,14 @@ export default function BasicTablePagination({
           display: 'flex',
           alignItems: 'center', // Align items vertically
           justifyContent: 'center', // Center text horizontally (if needed)
-          padding: '4px', // Adjust padding for better alignment
+          padding: '2px', // Adjust padding for better alignment
           lineHeight: '1.5', // Dropdown text
         },
         '& .MuiTablePagination-displayedRows': {
           fontSize: '1.3rem', // Next and previous buttons
         },
         '& .MuiTablePagination-selectIcon': {
-          color: 'rgb(var(--foreground))', // Next and previous buttonss
+          color: 'rgb(var(--foreground))', // Next and previous buttons
         },
       }}
     />

@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 
 const GlobalContext = createContext();
-const initialTheme = localStorage.getItem('theme') || 'dark';
 
 const DEFAULT_SOURCES = {
   'New York Times': true,
@@ -11,8 +10,9 @@ const DEFAULT_SOURCES = {
 
 const initialState = {
   isModalOpen: false,
-  theme: localStorage.getItem('theme') || 'dark',
-  selectedSources: DEFAULT_SOURCES, // Add selectedSources to the state
+  theme: localStorage.getItem('theme') || 'light',
+  selectedSources:
+    JSON.parse(localStorage.getItem('selectedSources')) || DEFAULT_SOURCES, // Add selectedSources to the state
 };
 
 const reducer = (state, action) => {
@@ -22,6 +22,7 @@ const reducer = (state, action) => {
     case 'CLOSE_MODAL':
       return { ...state, isModalOpen: false };
     case 'UPDATE_SOURCES':
+      localStorage.setItem('selectedSources', JSON.stringify(action.payload));
       return { ...state, selectedSources: action.payload };
     case 'LIGHT':
       return { ...state, theme: 'light' };

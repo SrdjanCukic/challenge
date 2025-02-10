@@ -1,144 +1,102 @@
 import useApiFetch from '../service/useHomeSectionArticlesFetch';
-import Article from './Article';
+import BigArticle from './Articles/BigArticle';
 import HeroSection from './HeroSection';
-import SkeletonArticle from './SkeletonArticle';
+import SmallArticle from './Articles/SmallArticle';
+import { useEffect, useState } from 'react';
+import SkeletonSmallArticle from './SkeletonArticles/SkeletonSmallArticle';
+import SkeletonBigArticle from './SkeletonArticles/SkeletonBigArticle';
 
 function HomePage() {
   const { data, isLoading, error } = useApiFetch(
     'https://global-puls-api.onrender.com/api',
   );
 
-  if (isLoading) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  if (!isLoading) {
     return (
       <div>
         <HeroSection />
-        <div className="mx-auto flex w-screen flex-col items-center p-4 md:max-w-screen-2xl">
-          <div className="mb-8 w-full">
-            <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
-              The New York Times
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-              <div className="sm:col-span-3">
-                <SkeletonArticle isLarge={true} />
+        <div className="mx-auto flex flex-col items-center p-4 md:max-w-screen-2xl">
+          {['The New York Times', 'News API', 'GNews'].map(title => (
+            <div key={title} className="mb-8 w-full">
+              <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
+                {title}
               </div>
-              <div className="flex flex-col gap-4">
-                <SkeletonArticle />
-                <SkeletonArticle />
-                <SkeletonArticle />
-              </div>
-            </div>
-          </div>
-          <div className="mb-8 w-full">
-            <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
-              News API
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-              <div className="flex flex-col gap-4">
-                <SkeletonArticle />
-                <SkeletonArticle />
-                <SkeletonArticle />
-              </div>
-              <div className="sm:col-span-3">
-                <SkeletonArticle isLarge={true} />
+
+              <div className="grid grid-cols-[1fr] gap-4 md:grid-cols-[1fr_1fr] xl:grid-cols-[2fr_1fr]">
+                {/* First article - Full width on mobile, larger span on desktop */}
+                <div>
+                  {isMobile ? <SkeletonSmallArticle /> : <SkeletonBigArticle />}
+                </div>
+
+                {/* Stacked articles - Full width on mobile, smaller column on desktop */}
+                <div className="flex flex-col gap-4">
+                  <SkeletonSmallArticle />
+                  <SkeletonSmallArticle />
+                  <SkeletonSmallArticle />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="mb-8 w-full">
-            <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
-              GNews
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-              <div className="sm:col-span-3">
-                <SkeletonArticle isLarge={true} />
-              </div>
-              <div className="flex flex-col gap-4">
-                <SkeletonArticle />
-                <SkeletonArticle />
-                <SkeletonArticle />
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     );
   }
 
-  if (error)
+  if (error) {
     return (
       <div className="mt-10 flex justify-center text-2xl text-foreground">
         Error fetching data: {error.message}
       </div>
     );
+  }
 
   if (data) {
-    const { nyt, newsapi, gnews } = data;
-
+    const sections = [
+      { title: 'The New York Times', articles: data.nyt },
+      { title: 'News API', articles: data.newsapi },
+      { title: 'GNews', articles: data.gnews },
+    ];
+    console.log({ isMobile });
     return (
       <div>
         <HeroSection />
-        <div className="mx-auto flex w-screen flex-col items-center p-4 md:max-w-screen-2xl">
-          {/* New York Times Section */}
-          <div className="mb-8 w-full">
-            <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
-              The New York Times
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-              {/* First article takes up larger space */}
-              <div className="sm:col-span-3">
-                {nyt.slice(0, 1).map(article => (
-                  <Article key={article.link} data={article} isLarge={true} />
-                ))}
+        <div className="mx-auto flex flex-col items-center p-4 md:max-w-screen-2xl">
+          {sections.map(({ title, articles }) => (
+            <div key={title} className="mb-8 w-full">
+              <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
+                {title}
               </div>
 
-              {/* Stacked articles on the right */}
-              <div className="flex flex-col gap-4">
-                {nyt.slice(1, 4).map(article => (
-                  <Article key={article.link} data={article} isSmall={true} />
-                ))}
-              </div>
-            </div>
-          </div>
+              <div className="grid grid-cols-[1fr] gap-4 md:grid-cols-[1fr_1fr] xl:grid-cols-[2fr_1fr]">
+                {/* First article - Full width on mobile, larger span on desktop */}
+                {articles
+                  .slice(0, 1)
+                  .map(article =>
+                    isMobile ? (
+                      <SmallArticle key={article.link} data={article} />
+                    ) : (
+                      <BigArticle key={article.link} data={article} />
+                    ),
+                  )}
 
-          {/* News API Section */}
-          <div className="mb-8 w-full">
-            <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
-              News API
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-              <div className="flex flex-col gap-4">
-                {newsapi.slice(1, 4).map(article => (
-                  <Article key={article.link} data={article} isSmall={true} />
-                ))}
-              </div>
-              <div className="sm:col-span-3">
-                {newsapi.slice(0, 1).map(article => (
-                  <Article key={article.link} data={article} isLarge={true} />
-                ))}
+                {/* Stacked articles - Full width on mobile, smaller column on desktop */}
+                <div className="flex flex-col gap-4">
+                  {articles.slice(1, 4).map(article => (
+                    <SmallArticle key={article.link} data={article} />
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* GNews Section */}
-          <div className="mb-8 w-full">
-            <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
-              GNews
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-              {/* First article takes up larger space */}
-              <div className="sm:col-span-3">
-                {gnews.slice(0, 1).map(article => (
-                  <Article key={article.link} data={article} isLarge={true} />
-                ))}
-              </div>
-
-              {/* Stacked articles on the right */}
-              <div className="flex flex-col gap-4">
-                {gnews.slice(1, 4).map(article => (
-                  <Article key={article.link} data={article} isSmall={true} />
-                ))}
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     );

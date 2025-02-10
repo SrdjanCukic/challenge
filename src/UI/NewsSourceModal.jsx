@@ -14,33 +14,40 @@ import { useGlobalContext } from '../service/GlobalContext.jsx';
 
 const NewsSourceModal = () => {
   const { state, dispatch } = useGlobalContext();
-  const [sources, setSources] = useState(state.selectedSources);
+  const [localSources, setLocalSources] = useState(state.selectedSources);
   const [error, setError] = useState('');
 
-  // Check if any source is selected whenever the 'sources' state changes
+  // Initialize local sources state when modal is opened
   useEffect(() => {
-    const activeSources = Object.values(sources).filter(Boolean);
+    if (state.isModalOpen) {
+      setLocalSources(state.selectedSources);
+    }
+  }, [state.isModalOpen, state.selectedSources]);
+
+  // Check if any source is selected whenever the 'localSources' state changes
+  useEffect(() => {
+    const activeSources = Object.values(localSources).filter(Boolean);
     if (activeSources.length === 0) {
       setError('Please select at least one source.');
     } else {
       setError('');
     }
-  }, [sources]);
+  }, [localSources]);
 
   const handleSourceChange = source => {
     const updatedSources = {
-      ...sources,
-      [source]: !sources[source],
+      ...localSources,
+      [source]: !localSources[source],
     };
-    setSources(updatedSources);
+    setLocalSources(updatedSources);
   };
 
   const handleSave = e => {
     e.preventDefault();
 
     // Check if at least one source is selected
-    const activeSources = Object.keys(sources).filter(
-      source => sources[source],
+    const activeSources = Object.keys(localSources).filter(
+      source => localSources[source],
     );
 
     if (activeSources.length === 0) {
@@ -49,7 +56,7 @@ const NewsSourceModal = () => {
     }
 
     // Dispatch the updated sources to global state
-    dispatch({ type: 'UPDATE_SOURCES', payload: sources });
+    dispatch({ type: 'UPDATE_SOURCES', payload: localSources });
 
     // Close the modal
     dispatch({ type: 'CLOSE_MODAL' });
@@ -58,6 +65,10 @@ const NewsSourceModal = () => {
   const handleCloseModal = () => {
     dispatch({ type: 'CLOSE_MODAL' });
   };
+
+  const allSourcesUnselected = Object.values(localSources).every(
+    value => !value,
+  );
 
   return (
     <div>
@@ -79,10 +90,10 @@ const NewsSourceModal = () => {
           <DialogContent className="bg-background-mode">
             <Typography className="text-foreground">Sources:</Typography>
             <Stack>
-              {Object.keys(sources).map(source => (
+              {Object.keys(localSources).map(source => (
                 <label key={source}>
                   <Checkbox
-                    checked={sources[source]}
+                    checked={localSources[source]}
                     onChange={() => handleSourceChange(source)}
                   />
                   {source}
@@ -100,7 +111,18 @@ const NewsSourceModal = () => {
               Cancel
             </Button>
 
-            <Button type="submit">Save</Button>
+            <Button
+              type="submit"
+              disabled={allSourcesUnselected}
+              sx={{
+                '&.Mui-disabled': {
+                  backgroundColor: '#D3D3D3',
+                  color: '#ffffff',
+                },
+              }}
+            >
+              Save
+            </Button>
           </Stack>
         </form>
       </Dialog>

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import useMultiAPICall from '../service/useSearchFetch';
-import Article from './Article';
-import SkeletonArticle from './SkeletonArticle';
+import SearchArticle from './Articles/SearchArticle';
+import SkeletonSearchArticle from './SkeletonArticles/SkeletonSearchArticle';
 import StaggeredDropDown from './DropdownMenus/SearchDropMenu';
 import BasicTablePagination from './Pagination';
 
@@ -15,6 +15,7 @@ export function SearchNews() {
   // Pagination state
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(9);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (!isLoading && !error) {
@@ -38,12 +39,30 @@ export function SearchNews() {
 
       // Update sorted data
       setSortedData(sortedArray);
+      setPage(0);
     }
   }, [articles, isLoading, error, sortOption]);
 
   // Handle page change
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    if (
+      newPage !== page ||
+      newPage === 0 ||
+      newPage === Math.floor(sortedData.length / rowsPerPage)
+    ) {
+      setPage(newPage);
+      setTimeout(() => {
+        if (containerRef.current) {
+          window.scrollTo({
+            top:
+              containerRef.current.getBoundingClientRect().top +
+              window.scrollY -
+              80,
+            behavior: 'smooth',
+          });
+        }
+      }, 0);
+    }
   };
 
   // Handle rows per page change
@@ -52,6 +71,15 @@ export function SearchNews() {
     const newRowsPerPage = value % 3 === 0 ? value : Math.ceil(value / 3) * 3;
     setRowsPerPage(newRowsPerPage);
     setPage(0);
+    if (containerRef.current) {
+      window.scrollTo({
+        top:
+          containerRef.current.getBoundingClientRect().top +
+          window.scrollY -
+          80, // Adjust the offset value as needed to account for the header height
+        behavior: 'smooth',
+      });
+    }
   };
 
   if (isLoading) {
@@ -65,7 +93,7 @@ export function SearchNews() {
         </div>
         <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
           {Array.from({ length: 9 }).map((_, index) => (
-            <SkeletonArticle key={index} />
+            <SkeletonSearchArticle key={index} />
           ))}
         </div>
       </div>
@@ -89,7 +117,10 @@ export function SearchNews() {
   }
 
   return (
-    <div className="ml-auto mr-auto flex max-w-screen-2xl flex-col items-center">
+    <div
+      ref={containerRef}
+      className="mx-auto flex min-h-screen max-w-screen-2xl flex-col items-center"
+    >
       <div className="flex w-full justify-between p-2">
         <div className="flex justify-between">
           <div className="text-2xl text-foreground">Showing results for:</div>
@@ -98,20 +129,20 @@ export function SearchNews() {
         <StaggeredDropDown setSortOption={setSortOption} />
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
+      <div className="mb-auto grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
         {sortedData
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map(value => (
-            <Article key={value.link} data={value} />
+            <SearchArticle key={value.link} data={value} />
           ))}
       </div>
-      <div className="relative bottom-0 right-0">
+      <div className="sticky bottom-0 right-0 rounded-md bg-background-card shadow-md">
         <BasicTablePagination
           count={sortedData.length} // Total number of articles
           page={page} // Current page state
           rowsPerPage={rowsPerPage} // Current rows per page state
           onPageChange={handleChangePage} // Update the page state
-          onRowsPerPageChange={handleChangeRowsPerPage} // Update rows per page
+          onRowsPerPageChange={handleChangeRowsPerPage} // Update articles per page
         />
       </div>
     </div>
