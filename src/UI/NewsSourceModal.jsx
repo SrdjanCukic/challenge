@@ -77,12 +77,13 @@ const NewsSourceModal = () => {
         onClose={handleCloseModal}
         fullWidth
         keepMounted={false}
+        className="font-tinos"
       >
         <form
           onSubmit={handleSave}
           className="bg-background-mode text-foreground"
         >
-          <DialogTitle className="bg-background-mode">
+          <DialogTitle className="text bg-background-mode">
             Select at least one source:
           </DialogTitle>
           <Divider className="bg-primary" />

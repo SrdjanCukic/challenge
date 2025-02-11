@@ -10,18 +10,18 @@
     box-sizing: border-box;
   }
   body.dark {
-    --primary: 191 144 0;
+    --primary: 0 255 213;
     --foreground: 225 225 225;
-    --background: 41 128 185;
+    --background: 0 94 78;
     --background-card: 71 85 105;
     --background-mode: 30 30 47;
     --gradient-from: 14 165 233;
     --gradient-to: 99 102 241;
   }
   body.light {
-    --primary: 191 144 0;
+    --primary: 0 212 177;
     --foreground: 0 0 0;
-    --background: 41 128 185;
+    --background: 0 94 78;
     --background-card: 229 231 235;
     --background-mode: 240 240 240;
     --gradient-from: 96 165 250;

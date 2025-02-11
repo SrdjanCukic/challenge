@@ -119,9 +119,9 @@ export function SearchNews() {
   return (
     <div
       ref={containerRef}
-      className="mx-auto flex min-h-screen max-w-screen-2xl flex-col items-center"
+      className="mx-auto flex min-h-screen max-w-screen-2xl flex-col items-center px-4"
     >
-      <div className="flex w-full justify-between p-2">
+      <div className="flex w-full items-center justify-between py-4">
         <div className="flex justify-between">
           <div className="text-2xl text-foreground">Showing results for:</div>
           <div className="pl-2 text-2xl text-primary">{query}</div>
@@ -129,7 +129,7 @@ export function SearchNews() {
         <StaggeredDropDown setSortOption={setSortOption} />
       </div>
 
-      <div className="mb-auto grid w-full grid-cols-1 gap-1 sm:gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-8">
+      <div className="mb-auto grid w-full grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
         {sortedData
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map(value => (

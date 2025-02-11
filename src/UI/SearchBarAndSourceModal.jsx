@@ -67,7 +67,7 @@ const SearchBarAndSourceModal = () => {
             <SearchIcon />
           </IconButton>
 
-          <span className="h-[1.5rem] w-[1px] grow bg-primary/40" />
+          <span className="h-[1.5rem] w-[1px] grow bg-foreground/40" />
 
           <IconButton onClick={openModal} size="small" color="inherit">
             <ManageSearchIcon inert="true" />

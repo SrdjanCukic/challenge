@@ -33,13 +33,13 @@ function SearchArticle({ data }) {
 
         {/* Content with flex-grow to take space */}
         <div className="relative flex-grow">
-          <p className="line-clamp-2 text-[clamp(0.875rem,_calc(1vw+0.5rem),_1.25rem)] text-foreground">
+          <p className="line-clamp-2 text-[clamp(0.875rem,_calc(1vw+0.5rem),_1.25rem)] text-white">
             {content}
           </p>
         </div>
 
         {/* Date & Source - mt-auto ensures they stay at the bottom */}
-        <div className="mt-auto flex w-auto flex-row justify-between">
+        <div className="mt-auto flex w-auto flex-row justify-between pb-2">
           <div className="text-xl text-primary">{date}</div>
           <div className="max-w-[200px] truncate text-xl text-primary">
             {source}

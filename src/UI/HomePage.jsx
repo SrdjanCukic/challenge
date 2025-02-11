@@ -20,7 +20,7 @@ function HomePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <div>
         <HeroSection />
@@ -30,14 +30,10 @@ function HomePage() {
               <div className="my-10 text-center text-4xl text-foreground sm:text-6xl">
                 {title}
               </div>
-
               <div className="grid grid-cols-[1fr] gap-4 md:grid-cols-[1fr_1fr] xl:grid-cols-[2fr_1fr]">
-                {/* First article - Full width on mobile, larger span on desktop */}
                 <div>
                   {isMobile ? <SkeletonSmallArticle /> : <SkeletonBigArticle />}
                 </div>
-
-                {/* Stacked articles - Full width on mobile, smaller column on desktop */}
                 <div className="flex flex-col gap-4">
                   <SkeletonSmallArticle />
                   <SkeletonSmallArticle />
@@ -65,7 +61,7 @@ function HomePage() {
       { title: 'News API', articles: data.newsapi },
       { title: 'GNews', articles: data.gnews },
     ];
-    console.log({ isMobile });
+
     return (
       <div>
         <HeroSection />
@@ -77,7 +73,6 @@ function HomePage() {
               </div>
 
               <div className="grid grid-cols-[1fr] gap-4 md:grid-cols-[1fr_1fr] xl:grid-cols-[2fr_1fr]">
-                {/* First article - Full width on mobile, larger span on desktop */}
                 {articles
                   .slice(0, 1)
                   .map(article =>
@@ -87,8 +82,6 @@ function HomePage() {
                       <BigArticle key={article.link} data={article} />
                     ),
                   )}
-
-                {/* Stacked articles - Full width on mobile, smaller column on desktop */}
                 <div className="flex flex-col gap-4">
                   {articles.slice(1, 4).map(article => (
                     <SmallArticle key={article.link} data={article} />
