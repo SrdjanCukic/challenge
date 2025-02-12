@@ -12,7 +12,7 @@ const SearchBarAndSourceModal = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
-  const { dispatch } = useGlobalContext();
+  const { dispatch, isMobile } = useGlobalContext();
 
   const handleSearchClick = () => {
     setIsExpanded(!isExpanded);
@@ -61,9 +61,13 @@ const SearchBarAndSourceModal = () => {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />
-
         <div className="flex shrink-0 items-center justify-between gap-2">
-          <IconButton onClick={handleSearchClick} size="small" color="inherit">
+          <IconButton
+            onClick={handleSearchClick}
+            size="small"
+            color="inherit"
+            sx={{ display: !isMobile ? 'block' : 'none' }}
+          >
             <SearchIcon />
           </IconButton>
 

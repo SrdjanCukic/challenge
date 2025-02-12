@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 
 const GlobalContext = createContext();
 
@@ -12,7 +18,7 @@ const initialState = {
   isModalOpen: false,
   theme: localStorage.getItem('theme') || 'light',
   selectedSources:
-    JSON.parse(localStorage.getItem('selectedSources')) || DEFAULT_SOURCES, // Add selectedSources to the state
+    JSON.parse(localStorage.getItem('selectedSources')) || DEFAULT_SOURCES,
 };
 
 const reducer = (state, action) => {
@@ -35,6 +41,14 @@ const reducer = (state, action) => {
 
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const body = document.body;
@@ -50,7 +64,7 @@ export const GlobalProvider = ({ children }) => {
   }, [state.theme]);
 
   return (
-    <GlobalContext.Provider value={{ state, dispatch }}>
+    <GlobalContext.Provider value={{ state, dispatch, isMobile }}>
       {children}
     </GlobalContext.Provider>
   );

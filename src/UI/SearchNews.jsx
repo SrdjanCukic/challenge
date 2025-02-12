@@ -121,10 +121,10 @@ export function SearchNews() {
       ref={containerRef}
       className="mx-auto flex min-h-screen max-w-screen-2xl flex-col items-center px-4"
     >
-      <div className="flex w-full items-center justify-between py-4">
-        <div className="flex justify-between">
+      <div className="flex w-full flex-col items-center justify-between py-4 md:flex-row">
+        <div className="mb-2 flex flex-col justify-between md:mb-0 md:flex-row">
           <div className="text-2xl text-foreground">Showing results for:</div>
-          <div className="pl-2 text-2xl text-primary">{query}</div>
+          <div className="pl-2 text-center text-2xl text-primary">{query}</div>
         </div>
         <StaggeredDropDown setSortOption={setSortOption} />
       </div>

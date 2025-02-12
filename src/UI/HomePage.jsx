@@ -2,23 +2,15 @@ import useApiFetch from '../service/useHomeSectionArticlesFetch';
 import BigArticle from './Articles/BigArticle';
 import HeroSection from './HeroSection';
 import SmallArticle from './Articles/SmallArticle';
-import { useEffect, useState } from 'react';
 import SkeletonSmallArticle from './SkeletonArticles/SkeletonSmallArticle';
 import SkeletonBigArticle from './SkeletonArticles/SkeletonBigArticle';
+import { useGlobalContext } from '../service/GlobalContext';
 
 function HomePage() {
   const { data, isLoading, error } = useApiFetch(
     'https://global-puls-api.onrender.com/api',
   );
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const { isMobile } = useGlobalContext();
 
   if (isLoading) {
     return (
