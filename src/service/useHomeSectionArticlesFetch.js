@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-function useApiFetch(url) {
+function useHomeSectionArticlesFetch(url) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,4 +22,4 @@ function useApiFetch(url) {
   }, [url]);
   return { data, isLoading, error };
 }
-export default useApiFetch;
+export default useHomeSectionArticlesFetch;

@@ -7,15 +7,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../service/GlobalContext.jsx';
 
-const SearchAndPreferences = () => {
+const SearchBarAndSourceModal = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
-  const { dispatch } = useGlobalContext();
+  const { dispatch, isMobile } = useGlobalContext();
 
   const handleSearchClick = () => {
-    setIsExpanded(true);
+    setIsExpanded(!isExpanded);
   };
 
   const handleClickOutside = event => {
@@ -46,7 +46,7 @@ const SearchAndPreferences = () => {
     <div className="flex w-full grow justify-center align-middle">
       <Paper
         component="form"
-        className="flex w-full grow items-center justify-between bg-gradient-to-r from-primary/40 to-primary/20 px-2 py-1 bg-transparent"
+        className="flex w-full grow items-center justify-between bg-transparent bg-gradient-to-r from-primary/40 to-primary/20 px-2 py-1"
         classes={{ root: 'rounded-full' }}
         as="form"
         onSubmit={onSubmit}
@@ -61,15 +61,19 @@ const SearchAndPreferences = () => {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />
-
         <div className="flex shrink-0 items-center justify-between gap-2">
-          <IconButton onClick={handleSearchClick} size="small" color='inherit'>
+          <IconButton
+            onClick={handleSearchClick}
+            size="small"
+            color="inherit"
+            sx={{ display: !isMobile ? 'block' : 'none' }}
+          >
             <SearchIcon />
           </IconButton>
 
-          <span className="h-[1.5rem] w-[1px] grow bg-primary/40" />
+          <span className="h-[1.5rem] w-[1px] grow bg-foreground/40" />
 
-          <IconButton onClick={openModal} size="small" color='inherit'>
+          <IconButton onClick={openModal} size="small" color="inherit">
             <ManageSearchIcon inert="true" />
           </IconButton>
         </div>
@@ -78,4 +82,4 @@ const SearchAndPreferences = () => {
   );
 };
 
-export default SearchAndPreferences;
+export default SearchBarAndSourceModal;

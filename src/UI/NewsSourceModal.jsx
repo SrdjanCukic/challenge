@@ -10,62 +10,65 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../service/GlobalContext.jsx';
 
-const DEFAULT_SOURCES = {
-  'The New York Times': true,
-  'News Api': true,
-  Gnews: true,
-};
-
 const NewsSourceModal = () => {
-  const navigate = useNavigate();
   const { state, dispatch } = useGlobalContext();
-
-  const [sources, setSources] = useState(() => {
-    const savedSources = localStorage.getItem('newsSources');
-    return savedSources ? JSON.parse(savedSources) : DEFAULT_SOURCES;
-  });
+  const [localSources, setLocalSources] = useState(state.selectedSources);
   const [error, setError] = useState('');
 
+  // Initialize local sources state when modal is opened
   useEffect(() => {
-    // Show error if all sources are unselected
-    const activeSources = Object.values(sources).filter(Boolean);
+    if (state.isModalOpen) {
+      setLocalSources(state.selectedSources);
+    }
+  }, [state.isModalOpen, state.selectedSources]);
+
+  // Check if any source is selected whenever the 'localSources' state changes
+  useEffect(() => {
+    const activeSources = Object.values(localSources).filter(Boolean);
     if (activeSources.length === 0) {
       setError('Please select at least one source.');
     } else {
       setError('');
     }
-  }, [sources]);
+  }, [localSources]);
 
   const handleSourceChange = source => {
     const updatedSources = {
-      ...sources,
-      [source]: !sources[source],
+      ...localSources,
+      [source]: !localSources[source],
     };
-    setSources(updatedSources);
+    setLocalSources(updatedSources);
   };
 
   const handleSave = e => {
     e.preventDefault();
-    const activeSources = Object.keys(sources).filter(
-      source => sources[source],
+
+    // Check if at least one source is selected
+    const activeSources = Object.keys(localSources).filter(
+      source => localSources[source],
     );
 
-    // Save to local storage on submit
-    localStorage.setItem('newsSources', JSON.stringify(sources));
+    if (activeSources.length === 0) {
+      setError('Please select at least one source.');
+      return; // Prevent saving
+    }
 
-    // Navigate based on active sources
-    const sourcesString = activeSources.join(',');
-    navigate(`/personalized-news/${sourcesString}`);
+    // Dispatch the updated sources to global state
+    dispatch({ type: 'UPDATE_SOURCES', payload: localSources });
 
+    // Close the modal
     dispatch({ type: 'CLOSE_MODAL' });
   };
 
   const handleCloseModal = () => {
     dispatch({ type: 'CLOSE_MODAL' });
   };
+
+  const allSourcesUnselected = Object.values(localSources).every(
+    value => !value,
+  );
 
   return (
     <div>
@@ -74,12 +77,13 @@ const NewsSourceModal = () => {
         onClose={handleCloseModal}
         fullWidth
         keepMounted={false}
+        className="font-tinos"
       >
         <form
           onSubmit={handleSave}
           className="bg-background-mode text-foreground"
         >
-          <DialogTitle className="bg-background-mode">
+          <DialogTitle className="text bg-background-mode">
             Select at least one source:
           </DialogTitle>
           <Divider className="bg-primary" />
@@ -87,10 +91,10 @@ const NewsSourceModal = () => {
           <DialogContent className="bg-background-mode">
             <Typography className="text-foreground">Sources:</Typography>
             <Stack>
-              {Object.keys(sources).map(source => (
+              {Object.keys(localSources).map(source => (
                 <label key={source}>
                   <Checkbox
-                    checked={sources[source]}
+                    checked={localSources[source]}
                     onChange={() => handleSourceChange(source)}
                   />
                   {source}
@@ -104,11 +108,22 @@ const NewsSourceModal = () => {
             divider={<Divider orientation="vertical" flexItem />}
             className="mb-7 mr-7 flex justify-end bg-background-mode align-middle"
           >
-            <Button type="button" onClick={handleCloseModal} color='error'>
+            <Button type="button" onClick={handleCloseModal} color="error">
               Cancel
             </Button>
 
-            <Button type="submit">Save</Button>
+            <Button
+              type="submit"
+              disabled={allSourcesUnselected}
+              sx={{
+                '&.Mui-disabled': {
+                  backgroundColor: '#D3D3D3',
+                  color: '#ffffff',
+                },
+              }}
+            >
+              Save
+            </Button>
           </Stack>
         </form>
       </Dialog>
